@@ -102,7 +102,7 @@ export default function Home() {
               </button>
             </form>
             <img
-              src="/images/assistant.mp4"
+              src="/images/assistant.gif"
               alt="Ask Arrow"
               className="h-14 w-14 shrink-0 rounded-full border border-[#E5E5E7] object-cover shadow-sm"
             />
