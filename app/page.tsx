@@ -104,7 +104,7 @@ export default function Home() {
             <img
               src="/images/assistant.gif"
               alt="Ask Arrow"
-              className="h-[92px] w-[92px] shrink-0 rounded-full border border-[#E5E5E7] object-cover shadow-sm"
+              className="h-[140px] w-auto shrink-0 object-contain mix-blend-multiply"
             />
           </div>
         </div>
