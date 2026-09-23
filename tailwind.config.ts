@@ -15,13 +15,7 @@ const config: Config = {
         surface: "#F4F5F7",
       },
       fontFamily: {
-        heading: [
-          "system-ui",
-          "-apple-system",
-          "BlinkMacSystemFont",
-          '"Segoe UI"',
-          "sans-serif",
-        ],
+        heading: ["var(--font-heading)", "sans-serif"],
         body: [
           "system-ui",
           "-apple-system",

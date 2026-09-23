@@ -1,237 +1,226 @@
-const filterChips = [
-  "Bearing reference",
-  "Shaft size",
-  "Dimensions",
-  "Application",
-  "Drive type",
-  "Torque",
-  "Manufacturer ref",
+const filterChips = ["Bearing reference", "Shaft size", "Torque limiters", "Manufacturer ref"];
+
+const features = [
+  { title: "ACCOUNT PRICING", desc: "Contract rates, live" },
+  { title: "NEXT-DAY UK DISPATCH", desc: "Order before 4pm" },
+  { title: "ENGINEER-CHECKED SPECS", desc: "Before you commit" },
+  { title: "ISO 9001 SUPPLY", desc: "Trade accounts since 1974" },
 ];
 
 const activity = [
   {
     ref: "PO-48213",
-    desc: "GR-24 taper bore hub, 42mm — qty 12",
-    status: "Shipped",
-    tone: "bg-green-100 text-green-700",
+    desc: "GR-24 taper bore hub, 42mm",
+    meta: "DISPATCHED TODAY · DPD 1–2 DAY",
+    value: "qty 12",
+    dot: "bg-[#FF4438]",
   },
   {
     ref: "RFQ-1092",
-    desc: "Custom torque limiter — 14mm keyed shaft, 10 Nm",
-    status: "Awaiting quote",
-    tone: "bg-orange-100 text-orange-700",
+    desc: "Custom torque limiter, 10 Nm",
+    meta: "WITH ENGINEERING · RESPONSE DUE TOMORROW",
+    value: "Awaiting",
+    dot: "bg-[#4A90FF]",
   },
   {
     ref: "Q-3307",
-    desc: "Stainless bearing inserts, UCX series — qty 40",
-    status: "Ready to accept",
-    tone: "bg-blue-100 text-navy",
+    desc: "Stainless bearing inserts, UCX",
+    meta: "VALID 21 DAYS · READY TO ACCEPT",
+    value: "£1,284.00",
+    dot: "bg-[#34C759]",
   },
 ];
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col bg-surface">
+    <main className="flex min-h-screen flex-col bg-[#0A0A0C] text-[#EDEDEF]">
       {/* Top nav */}
-      <header className="flex h-[84px] items-center justify-between border-b border-line bg-white px-12">
-        <div className="flex items-center gap-10">
+      <header className="flex h-[76px] items-center justify-between border-b border-[#1C1C20] px-12">
+        <div className="flex items-center gap-11">
           <div className="flex items-center gap-2">
-            <img src="/images/logo.png" alt="Arrow Engineering" className="h-9 w-auto" />
-            <span className="text-2xl font-bold tracking-wide text-red font-heading">TRADE</span>
+            <img src="/images/logo.png" alt="Arrow Engineering" className="h-8 w-auto" />
+            <span className="font-heading text-[22px] font-extrabold tracking-wide text-[#FF4438]">TRADE</span>
           </div>
           <nav className="flex items-center gap-8 text-sm font-semibold">
-            <a href="#" className="text-ink">Find products</a>
-            <a href="#" className="text-muted hover:text-ink">RFQs &amp; quotes</a>
-            <a href="#" className="text-muted hover:text-ink">Orders</a>
-            <a href="#" className="text-muted hover:text-ink">Documents</a>
+            <span className="text-white">Find products</span>
+            <span className="text-[#8C8C93]">RFQs &amp; quotes</span>
+            <span className="text-[#8C8C93]">Orders</span>
+            <span className="text-[#8C8C93]">Documents</span>
           </nav>
         </div>
-        <div className="flex items-center gap-6">
-          <button
-            aria-label="Notifications"
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-line bg-white"
-          >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5B6472" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <div className="flex items-center gap-4">
+          <div className="relative flex h-9 w-9 items-center justify-center rounded-full border border-[#232327]">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#B4B4BA" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9" />
               <path d="M13.73 21a2 2 0 0 1-3.46 0" />
             </svg>
-          </button>
-          <div className="h-7 w-px bg-line" />
-          <button className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-navy">
-              <span className="text-sm font-bold text-white">WB</span>
+            <div className="absolute right-[5px] top-1 h-[7px] w-[7px] rounded-full border-[1.5px] border-[#0A0A0C] bg-[#FF4438]" />
+          </div>
+          <div className="flex items-center gap-2.5">
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#FF4438]">
+              <span className="font-heading text-xs font-bold text-white">WB</span>
             </div>
-            <div className="flex flex-col text-left leading-tight">
-              <span className="text-sm font-semibold text-ink">Warburtons Ltd</span>
-              <span className="text-xs text-muted">Trade account · J. Smith</span>
-            </div>
-          </button>
+            <span className="text-[13.5px] font-semibold">
+              J. Smith <span className="text-[#6B6B72]">·</span> Warburtons Ltd
+            </span>
+          </div>
         </div>
       </header>
 
-      {/* Hero / finder */}
-      <section className="flex flex-col items-center bg-navy px-12 py-14">
-        <div className="flex w-full max-w-3xl flex-col items-center gap-4 text-center">
-          <span className="font-heading text-xs font-bold uppercase tracking-[2px] text-red-200">
-            Product &amp; problem finder
-          </span>
-          <h1 className="font-heading text-4xl font-bold leading-tight text-white">
-            Tell us what you need. We&rsquo;ll find the solution.
+      {/* Hero */}
+      <section
+        className="relative overflow-hidden px-12 pb-14 pt-[72px]"
+        style={{
+          background:
+            "radial-gradient(ellipse 900px 500px at 15% 0%, rgba(255,68,56,0.10) 0%, rgba(255,68,56,0) 60%)",
+        }}
+      >
+        <div className="relative max-w-[780px]">
+          <h1 className="font-heading text-[76px] font-extrabold uppercase leading-[0.98] tracking-tight">
+            <span className="text-white">Precision</span>
+            <br />
+            <span className="text-white">Procurement</span>
+            <br />
+            <span className="text-[#FF4438]">At scale.</span>
           </h1>
-          <p className="max-w-xl text-base text-slate-300">
-            Search by part reference, dimensions or the engineering problem you&rsquo;re solving — or upload a
-            drawing or photo.
+          <p className="mt-[22px] max-w-[540px] text-[15.5px] leading-relaxed text-[#9C9CA3]">
+            Search by part reference, dimensions or the engineering problem you&rsquo;re solving — or
+            upload a drawing and let an engineer confirm the right solution.
           </p>
 
-          <form className="mt-3 flex w-full items-center gap-3 rounded-2xl bg-white p-2 pl-5 shadow-xl">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5B6472" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
+          <form className="mt-8 flex max-w-[560px] items-center gap-3 rounded-xl border border-[#232327] bg-[#141416] py-1.5 pl-[18px] pr-1.5">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#6B6B72" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
               <circle cx="11" cy="11" r="8" />
               <path d="M21 21l-4.35-4.35" />
             </svg>
             <input
               type="text"
               placeholder="e.g. torque limiter for a 14mm keyed shaft at 10 Nm"
-              aria-label="Describe what you need"
-              className="h-12 grow border-none text-sm text-ink outline-none"
+              className="h-10 grow bg-transparent text-sm text-[#EDEDEF] outline-none placeholder:text-[#6B6B72]"
             />
             <button
               type="button"
-              aria-label="Upload a drawing or photo"
-              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-line bg-surface"
+              className="flex h-[38px] shrink-0 items-center gap-1.5 rounded-lg bg-white px-4 text-[12.5px] font-bold tracking-wide text-[#0A0A0C]"
             >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5B6472" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0A0A0C" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
                 <path d="M17 8l-5-5-5 5" />
                 <path d="M12 3v12" />
               </svg>
-            </button>
-            <button
-              type="submit"
-              className="h-11 shrink-0 rounded-lg bg-red px-6 text-sm font-bold text-white"
-            >
-              Search
+              UPLOAD
             </button>
           </form>
 
-          <div className="mt-2 flex flex-wrap justify-center gap-2.5">
+          <div className="mt-5 flex flex-wrap items-center gap-3">
+            <span className="text-[11px] font-bold tracking-[1.2px] text-[#6B6B72]">POPULAR:</span>
             {filterChips.map((chip) => (
               <button
                 key={chip}
-                className="rounded-full border border-navy-light px-4 py-2 text-sm font-semibold text-slate-200"
+                className="rounded-lg border border-[#232327] px-3.5 py-[7px] text-[12.5px] font-semibold text-[#B4B4BA] transition-colors hover:border-[#4A4A52] hover:text-white"
               >
                 {chip}
               </button>
             ))}
           </div>
-        </div>
-      </section>
 
-      {/* Two paths */}
-      <section className="px-12 pb-2 pt-12">
-        <h2 className="font-heading text-xl font-bold text-ink">Two ways to get what you need</h2>
-        <p className="mb-6 mt-1 text-sm text-muted">
-          Straightforward parts checkout instantly. Anything needing engineering input goes to a quote.
-        </p>
-
-        <div className="grid grid-cols-2 gap-6">
-          <div className="flex flex-col gap-5 rounded-2xl border border-line bg-white p-8">
-            <div className="flex items-center gap-3.5">
-              <div className="flex h-11 w-11 items-center justify-center rounded-[10px] bg-blue-50">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0F1E3D" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="9" cy="21" r="1" />
-                  <circle cx="20" cy="21" r="1" />
-                  <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
-                </svg>
+          <div className="mt-11 grid max-w-[620px] grid-cols-2 gap-x-12 gap-y-6">
+            {features.map((f) => (
+              <div key={f.title} className="border-l-2 border-[#FF4438] pl-3.5">
+                <div className="text-xs font-bold tracking-wide text-[#EDEDEF]">{f.title}</div>
+                <div className="mt-1 text-[12.5px] text-[#6B6B72]">{f.desc}</div>
               </div>
-              <h3 className="font-heading text-lg font-bold text-ink">Straightforward products</h3>
-            </div>
-            <div className="flex flex-wrap items-center gap-2">
-              {["Find", "Configure", "Price", "Basket", "Checkout"].map((step, i, arr) => (
-                <span key={step} className="flex items-center gap-2">
-                  <span className="rounded-full bg-blue-50 px-3 py-1.5 text-xs font-semibold text-navy">
-                    {step}
-                  </span>
-                  {i < arr.length - 1 && <span className="text-line">→</span>}
-                </span>
-              ))}
-            </div>
-            <p className="text-sm leading-relaxed text-muted">
-              Search the full catalogue with your account pricing already applied, and check out in minutes.
-            </p>
-            <a href="#" className="mt-auto text-sm font-bold text-red">
-              Browse catalogue →
-            </a>
-          </div>
-
-          <div className="flex flex-col gap-5 rounded-2xl border border-line bg-white p-8">
-            <div className="flex items-center gap-3.5">
-              <div className="flex h-11 w-11 items-center justify-center rounded-[10px] bg-red-50">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C8102E" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                  <path d="M14 2v6h6" />
-                  <path d="M9 15l2 2 4-4" />
-                </svg>
-              </div>
-              <h3 className="font-heading text-lg font-bold text-ink">Engineering enquiry</h3>
-            </div>
-            <div className="flex flex-wrap items-center gap-2">
-              {["Enquiry", "Drawing / spec", "Arrow review", "Quotation"].map((step, i, arr) => (
-                <span key={step} className="flex items-center gap-2">
-                  <span className="rounded-full bg-red-50 px-3 py-1.5 text-xs font-semibold text-red-dark">
-                    {step}
-                  </span>
-                  {i < arr.length - 1 && <span className="text-line">→</span>}
-                </span>
-              ))}
-            </div>
-            <p className="text-sm leading-relaxed text-muted">
-              Upload drawings or specs and an engineer will confirm the right solution before you commit.
-            </p>
-            <a href="#" className="mt-auto text-sm font-bold text-red">
-              Start an RFQ →
-            </a>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Account summary */}
-      <section className="flex flex-col gap-5 px-12 pb-12 pt-8">
-        <h2 className="font-heading text-xl font-bold text-ink">Your account</h2>
-
-        <div className="grid grid-cols-3 gap-5">
-          {[
-            { label: "Open quotes", value: 4 },
-            { label: "Orders in progress", value: 7 },
-            { label: "Saved parts", value: 23 },
-          ].map((stat) => (
-            <div key={stat.label} className="rounded-2xl border border-line bg-white p-6">
-              <span className="text-sm font-semibold text-muted">{stat.label}</span>
-              <div className="mt-2 font-heading text-3xl font-bold text-ink">{stat.value}</div>
-            </div>
-          ))}
-        </div>
-
-        <div className="rounded-2xl border border-line bg-white">
-          <div className="flex items-center justify-between border-b border-line px-6 py-4">
-            <span className="text-sm font-bold text-ink">Recent activity</span>
-            <a href="#" className="text-sm font-bold text-red">
-              View all
-            </a>
-          </div>
-          {activity.map((row, i) => (
-            <div
-              key={row.ref}
-              className={`flex items-center gap-4 px-6 py-4 ${
-                i < activity.length - 1 ? "border-b border-line/60" : ""
-              }`}
-            >
-              <span className="w-32 shrink-0 text-sm text-muted">{row.ref}</span>
-              <span className="grow text-sm text-ink">{row.desc}</span>
-              <span className={`rounded-full px-3 py-1 text-xs font-bold ${row.tone}`}>
-                {row.status}
+      {/* Account status panel */}
+      <section className="px-12 pb-14 pt-2">
+        <div className="flex flex-col gap-7 border-t border-[#1C1C20] pt-10">
+          <div className="flex items-end justify-between">
+            <div>
+              <span className="text-[11px] font-bold tracking-[1.4px] text-[#FF4438]">
+                LIVE ACCOUNT STATUS
               </span>
+              <div className="font-heading mt-1 text-[26px] font-bold text-white">Warburtons Ltd</div>
             </div>
-          ))}
+            <div className="text-right">
+              <div className="text-[10.5px] font-bold tracking-wide text-[#6B6B72]">LAST SYNC</div>
+              <div className="mt-0.5 text-[13px] text-[#B4B4BA]">09:24 BST</div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-3 gap-4">
+            <div className="rounded-xl border border-[#232327] bg-[#131316] p-5">
+              <span className="text-[11px] font-bold tracking-wide text-[#6B6B72]">OPEN QUOTES</span>
+              <div className="font-heading mt-1.5 text-[30px] font-bold text-white">04</div>
+            </div>
+            <div className="rounded-xl border border-[#232327] bg-[#131316] p-5">
+              <span className="text-[11px] font-bold tracking-wide text-[#6B6B72]">ORDERS IN PROGRESS</span>
+              <div className="font-heading mt-1.5 text-[30px] font-bold text-white">07</div>
+            </div>
+            <div className="rounded-xl border border-[#232327] bg-[#131316] p-5">
+              <span className="text-[11px] font-bold tracking-wide text-[#6B6B72]">SAVED PARTS</span>
+              <div className="font-heading mt-1.5 text-[30px] font-bold text-[#FF4438]">23</div>
+            </div>
+          </div>
+
+          <div className="overflow-hidden rounded-xl border border-[#232327] bg-[#131316]">
+            <div className="flex items-center justify-between border-b border-[#232327] px-[22px] py-4">
+              <span className="text-[11px] font-bold tracking-wide text-[#B4B4BA]">RECENT ACTIVITY</span>
+              <a href="#" className="text-xs font-bold tracking-wide">
+                VIEW ALL
+              </a>
+            </div>
+            {activity.map((row, i) => (
+              <div
+                key={row.ref}
+                className={`flex items-center gap-3.5 px-[22px] py-4 transition-colors hover:bg-[#17171A] ${
+                  i < activity.length - 1 ? "border-b border-[#1C1C20]" : ""
+                }`}
+              >
+                <div className={`h-[7px] w-[7px] shrink-0 rounded-full ${row.dot}`} />
+                <div className="grow">
+                  <div className="text-sm font-semibold text-[#EDEDEF]">
+                    {row.ref} <span className="font-normal text-[#6B6B72]">·</span> {row.desc}
+                  </div>
+                  <div className="mt-0.5 text-[11.5px] tracking-wide text-[#6B6B72]">{row.meta}</div>
+                </div>
+                <span className="shrink-0 text-[13px] font-semibold text-[#B4B4BA]">{row.value}</span>
+              </div>
+            ))}
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div className="cursor-pointer rounded-xl border border-[#FF4438] bg-[#17110F] p-[22px] transition-transform hover:-translate-y-0.5">
+              <span className="text-[10.5px] font-bold tracking-wide text-[#FF9A8F]">
+                STRAIGHTFORWARD PRODUCTS
+              </span>
+              <div className="font-heading mt-1.5 text-xl font-bold text-white">Browse catalogue</div>
+              <div className="mt-2.5 text-[12.5px] font-semibold text-[#FF4438]">
+                Find · Configure · Checkout →
+              </div>
+            </div>
+            <div className="cursor-pointer rounded-xl border border-[#232327] bg-[#131316] p-[22px] transition-transform hover:-translate-y-0.5">
+              <span className="text-[10.5px] font-bold tracking-wide text-[#6B6B72]">
+                ENGINEERING ENQUIRY
+              </span>
+              <div className="font-heading mt-1.5 text-xl font-bold text-white">Start an RFQ</div>
+              <div className="mt-2.5 text-[12.5px] font-semibold text-[#B4B4BA]">
+                Drawing · Review · Quotation →
+              </div>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#34C759" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+              <path d="M22 4L12 14.01l-3-3" />
+            </svg>
+            <span className="text-[12.5px] text-[#6B6B72]">
+              ISO 9001 certified supply · Trade accounts since 1974
+            </span>
+          </div>
         </div>
       </section>
     </main>
