@@ -35,9 +35,9 @@ export default function Home() {
       {/* Top nav */}
       <header className="flex h-[84px] items-center justify-between border-b border-line bg-white px-12">
         <div className="flex items-center gap-10">
-          <div className="flex items-baseline gap-1.5 font-heading">
-            <span className="text-2xl font-bold tracking-wide text-navy">ARROW</span>
-            <span className="text-2xl font-bold tracking-wide text-red">TRADE</span>
+          <div className="flex items-center gap-2">
+            <img src="/images/logo.png" alt="Arrow Engineering" className="h-9 w-auto" />
+            <span className="text-2xl font-bold tracking-wide text-red font-heading">TRADE</span>
           </div>
           <nav className="flex items-center gap-8 text-sm font-semibold">
             <a href="#" className="text-ink">Find products</a>
@@ -162,7 +162,7 @@ export default function Home() {
               Browse catalogue →
             </a>
           </div>
-          
+
           <div className="flex flex-col gap-5 rounded-2xl border border-line bg-white p-8">
             <div className="flex items-center gap-3.5">
               <div className="flex h-11 w-11 items-center justify-center rounded-[10px] bg-red-50">
