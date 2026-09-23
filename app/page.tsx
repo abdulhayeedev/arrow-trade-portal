@@ -37,8 +37,8 @@ export default function Home() {
       {/* Top nav */}
       <header className="flex h-[76px] items-center justify-between border-b border-[#1C1C20] px-12">
         <div className="flex items-center gap-11">
-          <div className="flex items-center rounded-lg bg-white px-3 py-1.5">
-            <img src="/images/logo.png" alt="Arrow Engineering" className="h-10 w-auto" />
+          <div className="flex items-center">
+            <img src="/images/logo.png" alt="Arrow Engineering" className="h-14 w-auto" />
           </div>
           <nav className="flex items-center gap-8 text-sm font-semibold">
             <span className="text-white">Find products</span>
