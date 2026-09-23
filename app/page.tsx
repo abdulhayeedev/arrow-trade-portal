@@ -162,7 +162,7 @@ export default function Home() {
               Browse catalogue →
             </a>
           </div>
-
+          
           <div className="flex flex-col gap-5 rounded-2xl border border-line bg-white p-8">
             <div className="flex items-center gap-3.5">
               <div className="flex h-11 w-11 items-center justify-center rounded-[10px] bg-red-50">
