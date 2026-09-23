@@ -78,28 +78,35 @@ export default function Home() {
             upload a drawing and let an engineer confirm the right solution.
           </p>
 
-          <form className="mt-8 flex max-w-[560px] items-center gap-3 rounded-xl border border-[#E5E5E7] bg-white py-1.5 pl-[18px] pr-1.5 shadow-sm">
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#9AA2B1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
-              <circle cx="11" cy="11" r="8" />
-              <path d="M21 21l-4.35-4.35" />
-            </svg>
-            <input
-              type="text"
-              placeholder="e.g. torque limiter for a 14mm keyed shaft at 10 Nm"
-              className="h-10 grow bg-transparent text-sm text-[#14171F] outline-none placeholder:text-[#9AA2B1]"
-            />
-            <button
-              type="button"
-              className="flex h-[38px] shrink-0 items-center gap-1.5 rounded-lg bg-[#14171F] px-4 text-[12.5px] font-bold tracking-wide text-white"
-            >
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                <path d="M17 8l-5-5-5 5" />
-                <path d="M12 3v12" />
+          <div className="mt-8 flex items-center gap-4">
+            <form className="flex max-w-[560px] items-center gap-3 rounded-xl border border-[#E5E5E7] bg-white py-1.5 pl-[18px] pr-1.5 shadow-sm">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#9AA2B1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
+                <circle cx="11" cy="11" r="8" />
+                <path d="M21 21l-4.35-4.35" />
               </svg>
-              UPLOAD
-            </button>
-          </form>
+              <input
+                type="text"
+                placeholder="e.g. torque limiter for a 14mm keyed shaft at 10 Nm"
+                className="h-10 grow bg-transparent text-sm text-[#14171F] outline-none placeholder:text-[#9AA2B1]"
+              />
+              <button
+                type="button"
+                className="flex h-[38px] shrink-0 items-center gap-1.5 rounded-lg bg-[#14171F] px-4 text-[12.5px] font-bold tracking-wide text-white"
+              >
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                  <path d="M17 8l-5-5-5 5" />
+                  <path d="M12 3v12" />
+                </svg>
+                UPLOAD
+              </button>
+            </form>
+            <img
+              src="/images/assistant.mp4"
+              alt="Ask Arrow"
+              className="h-14 w-14 shrink-0 rounded-full border border-[#E5E5E7] object-cover shadow-sm"
+            />
+          </div>
 
           <div className="mt-5 flex flex-wrap items-center justify-center gap-3">
             <span className="text-[11px] font-bold tracking-[1.2px] text-[#9AA2B1]">POPULAR:</span>
