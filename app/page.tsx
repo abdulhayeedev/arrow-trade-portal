@@ -37,9 +37,8 @@ export default function Home() {
       {/* Top nav */}
       <header className="flex h-[76px] items-center justify-between border-b border-[#1C1C20] px-12">
         <div className="flex items-center gap-11">
-          <div className="flex items-center gap-2">
-            <img src="/images/logo.png" alt="Arrow Engineering" className="h-8 w-auto" />
-            <span className="font-heading text-[22px] font-extrabold tracking-wide text-[#FF4438]">TRADE</span>
+          <div className="flex items-center rounded-lg bg-white px-3 py-1.5">
+            <img src="/images/logo.png" alt="Arrow Engineering" className="h-10 w-auto" />
           </div>
           <nav className="flex items-center gap-8 text-sm font-semibold">
             <span className="text-white">Find products</span>
@@ -75,7 +74,7 @@ export default function Home() {
             "radial-gradient(ellipse 900px 500px at 15% 0%, rgba(255,68,56,0.10) 0%, rgba(255,68,56,0) 60%)",
         }}
       >
-        <div className="relative max-w-[780px]">
+        <div className="relative mx-auto flex max-w-[780px] flex-col items-center text-center">
           <h1 className="font-heading text-[76px] font-extrabold uppercase leading-[0.98] tracking-tight">
             <span className="text-white">Precision</span>
             <br />
@@ -125,7 +124,7 @@ export default function Home() {
 
           <div className="mt-11 grid max-w-[620px] grid-cols-2 gap-x-12 gap-y-6">
             {features.map((f) => (
-              <div key={f.title} className="border-l-2 border-[#FF4438] pl-3.5">
+              <div key={f.title} className="border-l-2 border-[#FF4438] pl-3.5 text-left">
                 <div className="text-xs font-bold tracking-wide text-[#EDEDEF]">{f.title}</div>
                 <div className="mt-1 text-[12.5px] text-[#6B6B72]">{f.desc}</div>
               </div>
