@@ -1,4 +1,5 @@
 import { getDashboardData } from "@/lib/dashboard";
+import { acceptQuote } from "@/app/dashboard/actions";
 import { redirect } from "next/navigation";
 
 const statusStyles: Record<string, string> = {
@@ -135,6 +136,18 @@ export default async function DashboardPage({
                   <span className="text-sm font-bold text-[#FF4438]">£{quote.value_gbp}</span>
                 )}
                 <StatusPill status={quote.status} />
+                {quote.status === "open" && (
+                  <form action={acceptQuote}>
+                    <input type="hidden" name="quoteId" value={quote.id} />
+                    <input type="hidden" name="description" value={quote.description} />
+                    <button
+                      type="submit"
+                      className="h-8 shrink-0 rounded-md bg-[#14171F] px-3 text-xs font-bold text-white"
+                    >
+                      Accept
+                    </button>
+                  </form>
+                )}
               </div>
             ))}
           </div>
