@@ -31,7 +31,29 @@ const activity = [
   },
 ];
 
-export default function Home() {
+import { createClient } from "@/lib/supabase/server";
+import { logout } from "@/app/auth/actions";
+import { redirect } from "next/navigation";
+
+export default async function Home() {
+  const supabase = createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/login");
+  }
+
+  const companyName = (user.user_metadata?.company_name as string) || "Trade Account";
+  const initials = companyName
+    .split(" ")
+    .map((word) => word[0])
+    .filter(Boolean)
+    .slice(0, 2)
+    .join("")
+    .toUpperCase();
+
   return (
     <main className="flex min-h-screen flex-col bg-white text-[#14171F]">
       {/* Top nav */}
@@ -42,8 +64,8 @@ export default function Home() {
           </div>
           <nav className="flex items-center gap-8 text-sm font-semibold">
             <span className="text-[#14171F]">Find products</span>
-            <span className="text-[#6B7280]">RFQs &amp; quotes</span>
-            <span className="text-[#6B7280]">Orders</span>
+            <a href="/dashboard" className="text-[#6B7280] hover:text-[#14171F]">RFQs &amp; quotes</a>
+            <a href="/dashboard" className="text-[#6B7280] hover:text-[#14171F]">Orders</a>
             <span className="text-[#6B7280]">Documents</span>
           </nav>
         </div>
@@ -57,12 +79,20 @@ export default function Home() {
           </div>
           <div className="flex items-center gap-2.5">
             <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#FF4438]">
-              <span className="font-heading text-xs font-bold text-white">WB</span>
+              <span className="font-heading text-xs font-bold text-white">{initials}</span>
             </div>
             <span className="text-[13.5px] font-semibold text-[#14171F]">
-              J. Smith <span className="text-[#9AA2B1]">·</span> Warburtons Ltd
+              {user.email} <span className="text-[#9AA2B1]">·</span> {companyName}
             </span>
           </div>
+          <form action={logout}>
+            <button
+              type="submit"
+              className="text-[13px] font-semibold text-[#6B7280] hover:text-[#14171F]"
+            >
+              Log out
+            </button>
+          </form>
         </div>
       </header>
 
@@ -149,7 +179,7 @@ export default function Home() {
           <div className="overflow-hidden rounded-xl border border-[#E5E5E7] bg-white shadow-sm">
             <div className="flex items-center justify-between border-b border-[#E5E5E7] px-[22px] py-4">
               <span className="text-[11px] font-bold tracking-wide text-[#374151]">RECENT ACTIVITY</span>
-              <a href="#" className="text-xs font-bold tracking-wide text-[#FF4438]">
+              <a href="/dashboard" className="text-xs font-bold tracking-wide text-[#FF4438]">
                 VIEW ALL
               </a>
             </div>
