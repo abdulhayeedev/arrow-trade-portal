@@ -25,7 +25,11 @@ function StatusPill({ status }: { status: string }) {
   );
 }
 
-export default async function DashboardPage() {
+export default async function DashboardPage({
+  searchParams,
+}: {
+  searchParams: { message?: string };
+}) {
   const data = await getDashboardData();
 
   if (!data) {
@@ -36,6 +40,11 @@ export default async function DashboardPage() {
 
   return (
     <main className="min-h-screen bg-white px-12 py-12 text-[#14171F]">
+      {searchParams.message && (
+        <div className="mb-6 rounded-lg border border-[#1D7A34] bg-[#EAF6EC] px-4 py-3 text-sm text-[#1D7A34]">
+          {searchParams.message}
+        </div>
+      )}
       <div className="mb-10 flex items-center justify-between">
         <div>
           <span className="text-[11px] font-bold tracking-[1.4px] text-[#FF4438]">

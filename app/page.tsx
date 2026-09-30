@@ -212,7 +212,10 @@ export default async function Home() {
                 Find · Configure · Checkout →
               </div>
             </div>
-            <div className="cursor-pointer rounded-xl border border-[#E5E5E7] bg-white p-[22px] shadow-sm transition-transform hover:-translate-y-0.5">
+            <a
+              href="/rfq"
+              className="cursor-pointer rounded-xl border border-[#E5E5E7] bg-white p-[22px] shadow-sm transition-transform hover:-translate-y-0.5"
+            >
               <span className="text-[10.5px] font-bold tracking-wide text-[#6B7280]">
                 ENGINEERING ENQUIRY
               </span>
@@ -220,7 +223,7 @@ export default async function Home() {
               <div className="mt-2.5 text-[12.5px] font-semibold text-[#374151]">
                 Drawing · Review · Quotation →
               </div>
-            </div>
+            </a>
           </div>
 
           <div className="flex items-center gap-2">
