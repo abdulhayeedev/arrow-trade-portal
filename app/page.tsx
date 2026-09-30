@@ -79,13 +79,18 @@ export default function Home() {
           </p>
 
           <div className="mt-8 flex items-center gap-5">
-            <form className="flex max-w-[680px] items-center gap-3 rounded-2xl border border-[#E5E5E7] bg-white py-2.5 pl-6 pr-2.5 shadow-sm">
+            <form
+              action="/products"
+              method="GET"
+              className="flex max-w-[680px] items-center gap-3 rounded-2xl border border-[#E5E5E7] bg-white py-2.5 pl-6 pr-2.5 shadow-sm"
+            >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9AA2B1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
                 <circle cx="11" cy="11" r="8" />
                 <path d="M21 21l-4.35-4.35" />
               </svg>
               <input
                 type="text"
+                name="q"
                 placeholder="e.g. torque limiter for a 14mm keyed shaft at 10 Nm"
                 className="h-14 grow bg-transparent text-base text-[#14171F] outline-none placeholder:text-[#9AA2B1]"
               />
