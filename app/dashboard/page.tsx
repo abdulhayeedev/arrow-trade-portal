@@ -1,6 +1,7 @@
 import { getDashboardData } from "@/lib/dashboard";
 import { acceptQuote } from "@/app/dashboard/actions";
 import { redirect } from "next/navigation";
+import SiteHeader from "@/components/SiteHeader";
 
 const statusStyles: Record<string, string> = {
   awaiting_quote: "bg-[#FDF1E4] text-[#B15E00]",
@@ -40,7 +41,9 @@ export default async function DashboardPage({
   const { companyName, rfqs, quotes, orders, savedParts } = data;
 
   return (
-    <main className="min-h-screen bg-white px-12 py-12 text-[#14171F]">
+    <main className="min-h-screen bg-[#FAFAFB] text-[#14171F]">
+      <SiteHeader active="RFQs & quotes" />
+      <div className="mx-auto max-w-[1180px] px-14 py-12">
       {searchParams.message && (
         <div className="mb-6 rounded-lg border border-[#1D7A34] bg-[#EAF6EC] px-4 py-3 text-sm text-[#1D7A34]">
           {searchParams.message}
@@ -202,6 +205,7 @@ export default async function DashboardPage({
           </div>
         )}
       </section>
+      </div>
     </main>
   );
 }
