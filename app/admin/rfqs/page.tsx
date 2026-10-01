@@ -1,5 +1,6 @@
 import { isStaff, getAllRfqs } from "@/lib/admin";
 import { respondToRfq } from "@/app/admin/rfqs/actions";
+import { logout } from "@/app/auth/actions";
 import { redirect } from "next/navigation";
 
 export default async function AdminRfqsPage({
@@ -17,7 +18,8 @@ export default async function AdminRfqsPage({
   const responded = rfqs.filter((r) => r.status !== "awaiting_quote");
 
   return (
-    <main className="min-h-screen bg-white px-12 py-12 text-[#14171F]">
+    <main className="min-h-screen bg-[#FAFAFB] text-[#14171F]">
+      <div className="mx-auto max-w-[1180px] px-14 py-12">
       <div className="mb-8 flex items-center justify-between">
         <div>
           <span className="text-[11px] font-bold tracking-[1.4px] text-[#FF4438]">
@@ -25,9 +27,11 @@ export default async function AdminRfqsPage({
           </span>
           <h1 className="font-heading mt-1 text-3xl font-bold">Incoming RFQs</h1>
         </div>
-        <a href="/" className="text-sm font-semibold text-[#FF4438]">
-          ← Back to home
-        </a>
+        <form action={logout}>
+          <button type="submit" className="text-sm font-semibold text-[#6B7280] hover:text-[#14171F]">
+            Log out
+          </button>
+        </form>
       </div>
 
       {searchParams.message && (
@@ -142,6 +146,7 @@ export default async function AdminRfqsPage({
           </div>
         )}
       </section>
+      </div>
     </main>
   );
 }

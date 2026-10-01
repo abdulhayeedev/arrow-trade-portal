@@ -2,6 +2,7 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
+import { isStaff } from "@/lib/admin";
 
 export async function login(formData: FormData) {
   const supabase = createClient();
@@ -15,6 +16,11 @@ export async function login(formData: FormData) {
     redirect(`/login?error=${encodeURIComponent(error.message)}`);
   }
 
+  // Staff and customers land in different places after login.
+  if (await isStaff()) {
+    redirect("/admin/rfqs");
+  }
+
   redirect("/");
 }
 
@@ -24,12 +30,24 @@ export async function signup(formData: FormData) {
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
   const companyName = formData.get("companyName") as string;
+  const role = (formData.get("role") as string) || "customer";
+
+  if (role === "staff" && !email.toLowerCase().endsWith("@arrowengineering.com")) {
+    redirect(
+      `/signup?error=${encodeURIComponent(
+        "Staff accounts must use an @arrowengineering.com email address"
+      )}`
+    );
+  }
 
   const { error } = await supabase.auth.signUp({
     email,
     password,
     options: {
-      data: { company_name: companyName },
+      data: {
+        role,
+        ...(role === "customer" ? { company_name: companyName } : {}),
+      },
     },
   });
 
