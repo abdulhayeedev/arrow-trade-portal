@@ -1,11 +1,12 @@
 import { getProducts } from "@/lib/woocommerce";
+import { addToBasket } from "@/app/products/actions";
 
 export const revalidate = 300; // re-fetch from WooCommerce at most every 5 minutes
 
 export default async function ProductsPage({
   searchParams,
 }: {
-  searchParams: { q?: string };
+  searchParams: { q?: string; message?: string };
 }) {
   const query = searchParams.q?.trim();
   const products = query ? await getProducts({ search: query }) : [];
@@ -16,10 +17,21 @@ export default async function ProductsPage({
         <h1 className="font-heading text-3xl font-bold">
           {query ? `Results for "${query}"` : "Search for a product"}
         </h1>
-        <a href="/" className="text-sm font-semibold text-[#FF4438]">
-          ← Back to search
-        </a>
+        <div className="flex items-center gap-5">
+          <a href="/basket" className="text-sm font-semibold text-[#14171F]">
+            Basket →
+          </a>
+          <a href="/" className="text-sm font-semibold text-[#FF4438]">
+            ← Back to search
+          </a>
+        </div>
       </div>
+
+      {searchParams.message && (
+        <div className="mb-6 rounded-lg border border-[#1D7A34] bg-[#EAF6EC] px-4 py-3 text-sm text-[#1D7A34]">
+          {searchParams.message}
+        </div>
+      )}
 
       {!query ? (
         <p className="text-[#6B7280]">
@@ -31,26 +43,32 @@ export default async function ProductsPage({
       ) : (
         <div className="grid grid-cols-4 gap-6">
           {products.map((product) => (
-            <a
+            <div
               key={product.id}
-              href={product.permalink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex flex-col overflow-hidden rounded-xl border border-[#E5E5E7] bg-white shadow-sm transition-transform hover:-translate-y-0.5"
+              className="flex flex-col overflow-hidden rounded-xl border border-[#E5E5E7] bg-white shadow-sm"
             >
-              <div className="flex h-40 items-center justify-center bg-[#FAFAFB]">
-                {product.images?.[0]?.src ? (
-                  <img
-                    src={product.images[0].src}
-                    alt={product.images[0].alt || product.name}
-                    className="h-full w-full object-contain"
-                  />
-                ) : (
-                  <span className="text-xs text-[#9AA2B1]">No image</span>
-                )}
-              </div>
+              <a href={product.permalink} target="_blank" rel="noopener noreferrer">
+                <div className="flex h-40 items-center justify-center bg-[#FAFAFB]">
+                  {product.images?.[0]?.src ? (
+                    <img
+                      src={product.images[0].src}
+                      alt={product.images[0].alt || product.name}
+                      className="h-full w-full object-contain"
+                    />
+                  ) : (
+                    <span className="text-xs text-[#9AA2B1]">No image</span>
+                  )}
+                </div>
+              </a>
               <div className="flex flex-col gap-1 p-4">
-                <span className="text-sm font-semibold text-[#14171F]">{product.name}</span>
+                <a
+                  href={product.permalink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm font-semibold text-[#14171F] hover:text-[#FF4438]"
+                >
+                  {product.name}
+                </a>
                 <span className="text-xs text-[#9AA2B1]">SKU: {product.sku || "—"}</span>
                 <span className="mt-1 text-sm font-bold text-[#FF4438]">£{product.price}</span>
                 <span
@@ -60,8 +78,23 @@ export default async function ProductsPage({
                 >
                   {product.stock_status === "instock" ? "In stock" : "Out of stock"}
                 </span>
+
+                {product.stock_status === "instock" && (
+                  <form action={addToBasket} className="mt-2">
+                    <input type="hidden" name="wooProductId" value={product.id} />
+                    <input type="hidden" name="productName" value={product.name} />
+                    <input type="hidden" name="price" value={product.price} />
+                    <input type="hidden" name="returnQuery" value={query} />
+                    <button
+                      type="submit"
+                      className="h-9 w-full rounded-lg bg-[#14171F] text-xs font-bold text-white"
+                    >
+                      Add to basket
+                    </button>
+                  </form>
+                )}
               </div>
-            </a>
+            </div>
           ))}
         </div>
       )}
