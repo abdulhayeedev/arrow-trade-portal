@@ -21,6 +21,17 @@ export async function isStaff(): Promise<boolean> {
   return !!data;
 }
 
+export type AdminCompany = {
+  id: string;
+  name: string;
+};
+
+export async function getAllCompanies(): Promise<AdminCompany[]> {
+  const supabase = createClient();
+  const { data } = await supabase.from("companies").select("id, name").order("name");
+  return data ?? [];
+}
+
 export type AdminRfq = {
   id: string;
   company_id: string;

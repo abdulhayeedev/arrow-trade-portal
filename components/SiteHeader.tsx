@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { getBasketCount } from "@/lib/basket";
+import { isStaff } from "@/lib/admin";
 import UserMenu from "@/components/UserMenu";
 
 export default async function SiteHeader({ active }: { active?: string }) {
@@ -7,6 +8,8 @@ export default async function SiteHeader({ active }: { active?: string }) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
+
+  const staff = user ? await isStaff() : false;
 
   const companyName = (user?.user_metadata?.company_name as string) || "Trade Account";
   const displayName = user?.email
@@ -45,6 +48,7 @@ export default async function SiteHeader({ active }: { active?: string }) {
         {navLink("/", "Find products")}
         {navLink("/dashboard", "RFQs & quotes")}
         {navLink("/dashboard", "Orders")}
+        {staff && navLink("/admin/rfqs", "Admin")}
       </nav>
       <a href="/" className="flex items-center justify-center">
         <img src="/images/logo.png" alt="Arrow Engineering" className="h-14 w-auto" />
@@ -65,7 +69,12 @@ export default async function SiteHeader({ active }: { active?: string }) {
         {user && (
           <>
             <div className="h-7 w-px bg-[#E5E5E7]" />
-            <UserMenu displayName={displayName} companyName={companyName} initials={initials} />
+            <UserMenu
+              displayName={displayName}
+              companyName={companyName}
+              initials={initials}
+              profileHref={staff ? "/admin/rfqs" : "/dashboard"}
+            />
           </>
         )}
       </div>

@@ -7,10 +7,12 @@ export default function UserMenu({
   displayName,
   companyName,
   initials,
+  profileHref,
 }: {
   displayName: string;
   companyName: string;
   initials: string;
+  profileHref: string;
 }) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -56,7 +58,7 @@ export default function UserMenu({
       {open && (
         <div className="absolute right-0 top-[calc(100%+10px)] w-48 overflow-hidden rounded-xl border border-[#E5E5E7] bg-white py-1.5 shadow-[0_14px_32px_rgba(20,23,31,0.14)]">
           <a
-            href="/dashboard"
+            href={profileHref}
             className="block px-4 py-2.5 text-sm font-medium text-[#14171F] hover:bg-[#FAFAFB]"
           >
             My profile

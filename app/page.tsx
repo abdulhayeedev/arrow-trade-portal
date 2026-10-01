@@ -144,6 +144,53 @@ export default async function Home() {
         </div>
         </div>
       </section>
+
+      {/* Quick actions */}
+      <section className="px-14 py-14">
+        <div className="mx-auto max-w-[1180px]">
+          <h2 className="font-heading mb-5 text-2xl font-bold text-[#14171F]">
+            Two ways to get what you need
+          </h2>
+          <div className="grid grid-cols-2 gap-5">
+            <a
+              href="/products"
+              className="rounded-2xl border border-[#FF4438] bg-[#FFF3F2] p-6 transition-all hover:-translate-y-0.5 hover:shadow-[0_14px_32px_rgba(255,68,56,0.14)]"
+            >
+              <span className="text-[10.5px] font-bold text-[#A50D24]">
+                STRAIGHTFORWARD PRODUCTS
+              </span>
+              <div className="font-heading mt-1 text-xl font-bold text-[#14171F]">
+                Browse catalogue
+              </div>
+              <p className="mt-2 text-sm text-[#6B7280]">
+                Find a product, add it to your basket, and check out with your account pricing
+                already applied.
+              </p>
+              <div className="group mt-3 flex items-center gap-1.5 text-[12.5px] font-semibold text-[#FF4438]">
+                Find · Configure · Checkout
+                <span className="transition-transform group-hover:translate-x-1">→</span>
+              </div>
+            </a>
+            <a
+              href="/rfq"
+              className="rounded-2xl border border-[#E5E5E7] bg-white p-6 shadow-sm transition-all hover:-translate-y-0.5 hover:border-[#FF4438] hover:shadow-[0_14px_32px_rgba(255,68,56,0.14)]"
+            >
+              <span className="text-[10.5px] font-bold text-[#6B7280]">ENGINEERING ENQUIRY</span>
+              <div className="font-heading mt-1 text-xl font-bold text-[#14171F]">
+                Start an RFQ
+              </div>
+              <p className="mt-2 text-sm text-[#6B7280]">
+                Describe your problem or upload a drawing, and an engineer will come back with a
+                quotation.
+              </p>
+              <div className="group mt-3 flex items-center gap-1.5 text-[12.5px] font-semibold text-[#374151]">
+                Drawing · Review · Quotation
+                <span className="transition-transform group-hover:translate-x-1">→</span>
+              </div>
+            </a>
+          </div>
+        </div>
+      </section>
     </main>
   );
 }

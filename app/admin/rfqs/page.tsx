@@ -1,7 +1,7 @@
-import { isStaff, getAllRfqs } from "@/lib/admin";
-import { respondToRfq } from "@/app/admin/rfqs/actions";
-import { logout } from "@/app/auth/actions";
+import { isStaff, getAllRfqs, getAllCompanies } from "@/lib/admin";
+import { respondToRfq, createQuote, createOrder } from "@/app/admin/rfqs/actions";
 import { redirect } from "next/navigation";
+import SiteHeader from "@/components/SiteHeader";
 
 export default async function AdminRfqsPage({
   searchParams,
@@ -14,24 +14,19 @@ export default async function AdminRfqsPage({
   }
 
   const rfqs = await getAllRfqs();
+  const companies = await getAllCompanies();
   const awaiting = rfqs.filter((r) => r.status === "awaiting_quote");
   const responded = rfqs.filter((r) => r.status !== "awaiting_quote");
 
   return (
     <main className="min-h-screen bg-[#FAFAFB] text-[#14171F]">
+      <SiteHeader active="Admin" />
       <div className="mx-auto max-w-[1180px] px-14 py-12">
-      <div className="mb-8 flex items-center justify-between">
-        <div>
-          <span className="text-[11px] font-bold tracking-[1.4px] text-[#FF4438]">
-            INTERNAL — STAFF ONLY
-          </span>
-          <h1 className="font-heading mt-1 text-3xl font-bold">Incoming RFQs</h1>
-        </div>
-        <form action={logout}>
-          <button type="submit" className="text-sm font-semibold text-[#6B7280] hover:text-[#14171F]">
-            Log out
-          </button>
-        </form>
+      <div className="mb-8">
+        <span className="text-[11px] font-bold tracking-[1.4px] text-[#FF4438]">
+          INTERNAL — STAFF ONLY
+        </span>
+        <h1 className="font-heading mt-1 text-3xl font-bold">Incoming RFQs</h1>
       </div>
 
       {searchParams.message && (
@@ -146,6 +141,121 @@ export default async function AdminRfqsPage({
           </div>
         )}
       </section>
+
+      <div className="mt-12 grid grid-cols-2 gap-6">
+        <section className="rounded-xl border border-[#E5E5E7] bg-white p-5 shadow-sm">
+          <h2 className="font-heading mb-4 text-lg font-bold">Create a quote</h2>
+          <form action={createQuote} className="flex flex-col gap-3">
+            <div className="flex flex-col gap-1">
+              <label className="text-xs font-semibold text-[#6B7280]">Company</label>
+              <select
+                name="companyId"
+                required
+                className="h-9 rounded-md border border-[#E5E5E7] px-2.5 text-sm outline-none focus:border-[#14171F]"
+              >
+                <option value="">Select a company…</option>
+                {companies.map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="flex flex-col gap-1">
+              <label className="text-xs font-semibold text-[#6B7280]">Description</label>
+              <input
+                name="description"
+                required
+                className="h-9 rounded-md border border-[#E5E5E7] px-2.5 text-sm outline-none focus:border-[#14171F]"
+              />
+            </div>
+            <div className="flex gap-3">
+              <div className="flex flex-1 flex-col gap-1">
+                <label className="text-xs font-semibold text-[#6B7280]">Value (£)</label>
+                <input
+                  name="value"
+                  type="number"
+                  step="0.01"
+                  className="h-9 w-full rounded-md border border-[#E5E5E7] px-2.5 text-sm outline-none focus:border-[#14171F]"
+                />
+              </div>
+              <div className="flex flex-1 flex-col gap-1">
+                <label className="text-xs font-semibold text-[#6B7280]">Valid until</label>
+                <input
+                  name="validUntil"
+                  type="date"
+                  className="h-9 w-full rounded-md border border-[#E5E5E7] px-2.5 text-sm outline-none focus:border-[#14171F]"
+                />
+              </div>
+            </div>
+            <button
+              type="submit"
+              className="mt-1 h-9 rounded-md bg-[#FF4438] text-xs font-bold text-white"
+            >
+              Create quote
+            </button>
+          </form>
+        </section>
+
+        <section className="rounded-xl border border-[#E5E5E7] bg-white p-5 shadow-sm">
+          <h2 className="font-heading mb-4 text-lg font-bold">Create an order</h2>
+          <form action={createOrder} className="flex flex-col gap-3">
+            <div className="flex flex-col gap-1">
+              <label className="text-xs font-semibold text-[#6B7280]">Company</label>
+              <select
+                name="companyId"
+                required
+                className="h-9 rounded-md border border-[#E5E5E7] px-2.5 text-sm outline-none focus:border-[#14171F]"
+              >
+                <option value="">Select a company…</option>
+                {companies.map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="flex flex-col gap-1">
+              <label className="text-xs font-semibold text-[#6B7280]">Description</label>
+              <input
+                name="description"
+                required
+                className="h-9 rounded-md border border-[#E5E5E7] px-2.5 text-sm outline-none focus:border-[#14171F]"
+              />
+            </div>
+            <div className="flex gap-3">
+              <div className="flex flex-1 flex-col gap-1">
+                <label className="text-xs font-semibold text-[#6B7280]">Quantity</label>
+                <input
+                  name="quantity"
+                  type="number"
+                  min={1}
+                  defaultValue={1}
+                  className="h-9 w-full rounded-md border border-[#E5E5E7] px-2.5 text-sm outline-none focus:border-[#14171F]"
+                />
+              </div>
+              <div className="flex flex-1 flex-col gap-1">
+                <label className="text-xs font-semibold text-[#6B7280]">Status</label>
+                <select
+                  name="status"
+                  defaultValue="processing"
+                  className="h-9 w-full rounded-md border border-[#E5E5E7] px-2.5 text-sm outline-none focus:border-[#14171F]"
+                >
+                  <option value="processing">Processing</option>
+                  <option value="dispatched">Dispatched</option>
+                  <option value="delivered">Delivered</option>
+                </select>
+              </div>
+            </div>
+            <button
+              type="submit"
+              className="mt-1 h-9 rounded-md bg-[#14171F] text-xs font-bold text-white"
+            >
+              Create order
+            </button>
+          </form>
+        </section>
+      </div>
       </div>
     </main>
   );
