@@ -13,6 +13,15 @@ export async function POST(request: Request) {
   const signature = request.headers.get("x-wc-webhook-signature") ?? "";
 
   const expected = crypto.createHmac("sha256", secret).update(rawBody).digest("base64");
+
+  console.log("webhook debug", {
+    secretLength: secret.length,
+    hasSignatureHeader: signature !== "",
+    receivedStart: signature.slice(0, 6),
+    expectedStart: expected.slice(0, 6),
+    bodyLength: rawBody.length,
+    userAgent: request.headers.get("user-agent"),
+  });
   const a = Buffer.from(signature);
   const b = Buffer.from(expected);
 
