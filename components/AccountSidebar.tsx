@@ -2,7 +2,7 @@ export default function AccountSidebar({
   active,
   staff,
 }: {
-  active: "dashboard" | "profile";
+  active: "dashboard" | "profile" | "admin";
   staff: boolean;
 }) {
   const items = staff

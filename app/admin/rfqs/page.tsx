@@ -3,6 +3,7 @@ import { isStaff, getAllRfqs, getAllCompanies } from "@/lib/admin";
 import { respondToRfq, createQuote, createOrder } from "@/app/admin/rfqs/actions";
 import { redirect } from "next/navigation";
 import SiteHeader from "@/components/SiteHeader";
+import AccountSidebar from "@/components/AccountSidebar";
 
 export default async function AdminRfqsPage({
   searchParams,
@@ -27,7 +28,9 @@ export default async function AdminRfqsPage({
   return (
     <main className="min-h-screen bg-[#FAFAFB] text-[#14171F]">
       <SiteHeader active="Admin" user={user} />
-      <div className="mx-auto max-w-[1180px] px-14 py-12">
+      <div className="mx-auto grid max-w-[1180px] grid-cols-[220px_1fr] gap-10 px-14 py-12">
+        <AccountSidebar active="admin" staff={true} />
+        <div className="min-w-0">
       <div className="mb-8">
         <span className="text-[11px] font-bold tracking-[1.4px] text-[#FF4438]">
           INTERNAL — STAFF ONLY
@@ -261,6 +264,7 @@ export default async function AdminRfqsPage({
             </button>
           </form>
         </section>
+      </div>
       </div>
       </div>
     </main>
