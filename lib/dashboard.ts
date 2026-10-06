@@ -25,6 +25,7 @@ export type Order = {
   quantity: number;
   status: string;
   created_at: string;
+  payment_url: string | null;
 };
 
 export type SavedPart = {

@@ -50,6 +50,8 @@ export type WooOrderResult = {
   number: string;
   status: string;
   total: string;
+  payment_url?: string;
+  order_key?: string;
 };
 
 export async function createOrder(params: {
@@ -105,8 +107,6 @@ export async function createOrderWithDetails(params: {
   poNumber?: string;
 }): Promise<WooOrderResult> {
   const response = await api.post("orders", {
-    payment_method: "trade-account",
-    payment_method_title: "Trade Account",
     set_paid: false,
     billing: { ...params.billing, email: params.email, phone: params.phone },
     shipping: params.shipping,

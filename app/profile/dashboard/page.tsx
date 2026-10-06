@@ -18,6 +18,7 @@ const statusStyles: Record<string, string> = {
   dispatched: "bg-[#EEF3FF] text-[#16376B]",
   delivered: "bg-[#EAF6EC] text-[#1D7A34]",
   cancelled: "bg-[#FFF3F2] text-[#A50D24]",
+  pending_payment: "bg-[#FDF1E4] text-[#B15E00]",
 };
 
 function StatusPill({ status }: { status: string }) {
@@ -201,6 +202,14 @@ export default async function DashboardPage({
                   {order.description} — qty {order.quantity}
                 </span>
                 <StatusPill status={order.status} />
+                {order.status === "pending_payment" && order.payment_url && (
+                  <a
+                    href={order.payment_url}
+                    className="h-8 shrink-0 rounded-md bg-[#FF4438] px-3 text-xs font-bold leading-8 text-white"
+                  >
+                    Pay now
+                  </a>
+                )}
               </div>
             ))}
           </div>

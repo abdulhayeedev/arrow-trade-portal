@@ -107,6 +107,12 @@ export async function placeOrder(formData: FormData) {
     redirect(`/checkout?error=${encodeURIComponent(message)}`);
   }
 
+  // Where the customer pays: WooCommerce's own secure payment page for this order.
+  const wooBase = (process.env.WOOCOMMERCE_URL ?? "").replace(/\/$/, "");
+  const payUrl =
+    wooOrder.payment_url ||
+    `${wooBase}/checkout/order-pay/${wooOrder.id}/?pay_for_order=true&key=${wooOrder.order_key}`;
+
   // Remember these details for next time.
   await supabase.from("company_checkout_details").upsert(
     {
@@ -136,9 +142,10 @@ export async function placeOrder(formData: FormData) {
     quantity: items.reduce((sum, item) => sum + item.quantity, 0),
     status: mapWooStatus(wooOrder.status),
     woo_order_id: wooOrder.id,
+    payment_url: payUrl,
   });
 
   await supabase.from("basket_items").delete().eq("company_id", companyId);
 
-  redirect(`/profile/dashboard?message=${encodeURIComponent("Order placed successfully")}`);
+  redirect(payUrl);
 }

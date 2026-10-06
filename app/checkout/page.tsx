@@ -190,12 +190,12 @@ export default async function CheckoutPage({
               <span>Total</span>
               <span>£{total.toFixed(2)}</span>
             </div>
-            <p className="mt-3 text-xs text-[#9AA2B1]">Payment method: Trade account</p>
+            <p className="mt-3 text-xs text-[#9AA2B1]">You&rsquo;ll pay securely by card on the next step.</p>
             <button
               type="submit"
               className="mt-5 h-11 w-full rounded-lg bg-[#FF4438] text-sm font-bold text-white"
             >
-              Place order
+              Continue to payment
             </button>
           </aside>
         </form>
