@@ -54,25 +54,6 @@ export type WooOrderResult = {
   order_key?: string;
 };
 
-export async function createOrder(params: {
-  email: string;
-  companyName: string;
-  lineItems: WooOrderLineItem[];
-}): Promise<WooOrderResult> {
-  const response = await api.post("orders", {
-    payment_method: "trade-account",
-    payment_method_title: "Trade Account",
-    set_paid: false,
-    billing: {
-      email: params.email,
-      company: params.companyName,
-      first_name: params.companyName,
-      last_name: "Trade Account",
-    },
-    line_items: params.lineItems,
-  });
-  return response.data as WooOrderResult;
-}
 export async function getProductsByIds(ids: number[]): Promise<WooProduct[]> {
   if (ids.length === 0) return [];
   try {

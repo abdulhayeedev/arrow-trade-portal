@@ -1,7 +1,6 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
-import { createOrder } from "@/lib/woocommerce";
 import { redirect } from "next/navigation";
 
 async function getCompanyId(): Promise<{ companyId: string; userEmail: string }> {
