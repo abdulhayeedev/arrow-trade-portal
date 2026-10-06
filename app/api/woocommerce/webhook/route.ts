@@ -12,6 +12,12 @@ export async function POST(request: Request) {
   const rawBody = await request.text();
   const signature = request.headers.get("x-wc-webhook-signature") ?? "";
 
+  // WooCommerce's test ping (sent when a webhook is saved) is unsigned and
+  // looks like "webhook_id=123". It changes nothing, so just acknowledge it.
+  if (signature === "" && /^webhook_id=\d+$/.test(rawBody)) {
+    return NextResponse.json({ ok: true });
+  }
+
   const expected = crypto.createHmac("sha256", secret).update(rawBody).digest("base64");
 
   console.log("webhook debug", {
