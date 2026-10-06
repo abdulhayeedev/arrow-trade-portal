@@ -1,21 +1,17 @@
 import { createClient } from "@/lib/supabase/server";
 
-export async function isStaff(): Promise<boolean> {
+export async function isStaff(userId: string | null): Promise<boolean> {
+  if (!userId) return false;
   const supabase = createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) return false;
 
   const { data, error } = await supabase
     .from("staff")
     .select("user_id")
-    .eq("user_id", user.id)
+    .eq("user_id", userId)
     .single();
 
   if (error) {
-    console.error("isStaff check failed for user", user.id, error);
+    console.error("isStaff check failed for user", userId, error);
   }
 
   return !!data;

@@ -14,7 +14,7 @@ export default async function Home() {
 
   return (
     <main className="flex min-h-screen flex-col bg-white text-[#14171F]">
-      <SiteHeader active="Find products" />
+      <SiteHeader active="Find products" user={user} />
 
       {/* USP bar */}
       <section className="border-b border-[#E5E5E7] bg-[#FAFAFB] px-14 py-6">

@@ -1,3 +1,4 @@
+import { createClient } from "@/lib/supabase/server";
 import { isStaff, getAllRfqs, getAllCompanies } from "@/lib/admin";
 import { respondToRfq, createQuote, createOrder } from "@/app/admin/rfqs/actions";
 import { redirect } from "next/navigation";
@@ -8,7 +9,12 @@ export default async function AdminRfqsPage({
 }: {
   searchParams: { message?: string; error?: string };
 }) {
-  const staff = await isStaff();
+  const supabase = createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  const staff = await isStaff(user?.id ?? null);
   if (!staff) {
     redirect("/login");
   }
@@ -20,7 +26,7 @@ export default async function AdminRfqsPage({
 
   return (
     <main className="min-h-screen bg-[#FAFAFB] text-[#14171F]">
-      <SiteHeader active="Admin" />
+      <SiteHeader active="Admin" user={user} />
       <div className="mx-auto max-w-[1180px] px-14 py-12">
       <div className="mb-8">
         <span className="text-[11px] font-bold tracking-[1.4px] text-[#FF4438]">

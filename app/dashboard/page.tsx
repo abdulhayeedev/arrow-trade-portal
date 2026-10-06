@@ -1,3 +1,4 @@
+import { createClient } from "@/lib/supabase/server";
 import { getDashboardData } from "@/lib/dashboard";
 import { acceptQuote } from "@/app/dashboard/actions";
 import { redirect } from "next/navigation";
@@ -32,7 +33,12 @@ export default async function DashboardPage({
 }: {
   searchParams: { message?: string };
 }) {
-  const data = await getDashboardData();
+  const supabase = createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  const data = await getDashboardData(user?.id ?? null);
 
   if (!data) {
     redirect("/login");
@@ -42,7 +48,7 @@ export default async function DashboardPage({
 
   return (
     <main className="min-h-screen bg-[#FAFAFB] text-[#14171F]">
-      <SiteHeader active="RFQs & quotes" />
+      <SiteHeader active="RFQs & quotes" user={user} />
       <div className="mx-auto max-w-[1180px] px-14 py-12">
       {searchParams.message && (
         <div className="mb-6 rounded-lg border border-[#1D7A34] bg-[#EAF6EC] px-4 py-3 text-sm text-[#1D7A34]">

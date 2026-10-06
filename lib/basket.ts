@@ -1,17 +1,13 @@
 import { createClient } from "@/lib/supabase/server";
 
-export async function getBasketCount(): Promise<number> {
+export async function getBasketCount(userId: string | null): Promise<number> {
+  if (!userId) return 0;
   const supabase = createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) return 0;
 
   const { data: membership } = await supabase
     .from("company_members")
     .select("company_id")
-    .eq("user_id", user.id)
+    .eq("user_id", userId)
     .single();
 
   if (!membership) return 0;

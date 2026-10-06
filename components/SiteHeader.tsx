@@ -1,15 +1,16 @@
-import { createClient } from "@/lib/supabase/server";
+import type { User } from "@supabase/supabase-js";
 import { getBasketCount } from "@/lib/basket";
 import { isStaff } from "@/lib/admin";
 import UserMenu from "@/components/UserMenu";
 
-export default async function SiteHeader({ active }: { active?: string }) {
-  const supabase = createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  const staff = user ? await isStaff() : false;
+export default async function SiteHeader({
+  active,
+  user,
+}: {
+  active?: string;
+  user: User | null;
+}) {
+  const staff = await isStaff(user?.id ?? null);
 
   const companyName = (user?.user_metadata?.company_name as string) || "Trade Account";
   const displayName = user?.email
@@ -26,7 +27,7 @@ export default async function SiteHeader({ active }: { active?: string }) {
     .join("")
     .toUpperCase();
 
-  const basketCount = user ? await getBasketCount() : 0;
+  const basketCount = await getBasketCount(user?.id ?? null);
 
   const navLink = (href: string, label: string) => (
     <a

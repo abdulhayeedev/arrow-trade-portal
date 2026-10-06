@@ -42,23 +42,18 @@ export type DashboardData = {
   savedParts: SavedPart[];
 };
 
-export async function getDashboardData(): Promise<DashboardData | null> {
+export async function getDashboardData(userId: string | null): Promise<DashboardData | null> {
+  if (!userId) return null;
   const supabase = createClient();
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) return null;
 
   const { data: membership, error: membershipError } = await supabase
     .from("company_members")
     .select("company_id")
-    .eq("user_id", user.id)
+    .eq("user_id", userId)
     .single();
 
   if (membershipError || !membership) {
-    console.error("getDashboardData: no company_members row for user", user.id, membershipError);
+    console.error("getDashboardData: no company_members row for user", userId, membershipError);
     return null;
   }
 

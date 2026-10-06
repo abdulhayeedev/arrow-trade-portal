@@ -10,14 +10,14 @@ export async function login(formData: FormData) {
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
 
-  const { error } = await supabase.auth.signInWithPassword({ email, password });
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
 
   if (error) {
     redirect(`/login?error=${encodeURIComponent(error.message)}`);
   }
 
   // Staff and customers land in different places after login.
-  if (await isStaff()) {
+  if (await isStaff(data.user?.id ?? null)) {
     redirect("/admin/rfqs");
   }
 
@@ -55,7 +55,7 @@ export async function signup(formData: FormData) {
     redirect(`/signup?error=${encodeURIComponent(error.message)}`);
   }
 
-  redirect("/login?message=Check your email to confirm your account");
+  redirect(`/verify?email=${encodeURIComponent(email)}`);
 }
 
 export async function logout() {

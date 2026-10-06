@@ -37,7 +37,7 @@ export default async function BasketPage({
 
   return (
     <main className="min-h-screen bg-[#FAFAFB] text-[#14171F]">
-      <SiteHeader />
+      <SiteHeader user={user} />
 
       <div className="mx-auto max-w-[1180px] px-14 py-12">
         <div className="mb-8 flex items-center justify-between">

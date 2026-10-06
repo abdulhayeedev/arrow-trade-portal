@@ -1,5 +1,6 @@
 import { getProducts } from "@/lib/woocommerce";
 import { addToBasket } from "@/app/products/actions";
+import { createClient } from "@/lib/supabase/server";
 import SiteHeader from "@/components/SiteHeader";
 
 export const revalidate = 300; // re-fetch from WooCommerce at most every 5 minutes
@@ -11,6 +12,11 @@ export default async function ProductsPage({
 }: {
   searchParams: { q?: string; message?: string; page?: string };
 }) {
+  const supabase = createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
   const query = searchParams.q?.trim();
   const currentPage = Math.max(1, parseInt(searchParams.page ?? "1", 10) || 1);
   const products = query
@@ -22,7 +28,7 @@ export default async function ProductsPage({
 
   return (
     <main className="min-h-screen bg-[#FAFAFB] text-[#14171F]">
-      <SiteHeader active="Find products" />
+      <SiteHeader active="Find products" user={user} />
 
       <div className="mx-auto max-w-[1280px] px-10 py-10">
         <div className="mb-8 flex items-center justify-between">

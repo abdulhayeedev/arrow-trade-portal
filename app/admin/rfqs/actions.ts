@@ -5,12 +5,14 @@ import { isStaff } from "@/lib/admin";
 import { redirect } from "next/navigation";
 
 export async function respondToRfq(formData: FormData) {
-  const staff = await isStaff();
-  if (!staff) {
+  const supabase = createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!(await isStaff(user?.id ?? null))) {
     redirect("/login");
   }
-
-  const supabase = createClient();
 
   const rfqId = formData.get("rfqId") as string;
   const companyId = formData.get("companyId") as string;
@@ -48,12 +50,14 @@ export async function respondToRfq(formData: FormData) {
 }
 
 export async function createQuote(formData: FormData) {
-  const staff = await isStaff();
-  if (!staff) {
+  const supabase = createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!(await isStaff(user?.id ?? null))) {
     redirect("/login");
   }
-
-  const supabase = createClient();
 
   const companyId = formData.get("companyId") as string;
   const description = formData.get("description") as string;
@@ -81,12 +85,14 @@ export async function createQuote(formData: FormData) {
 }
 
 export async function createOrder(formData: FormData) {
-  const staff = await isStaff();
-  if (!staff) {
+  const supabase = createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!(await isStaff(user?.id ?? null))) {
     redirect("/login");
   }
-
-  const supabase = createClient();
 
   const companyId = formData.get("companyId") as string;
   const description = formData.get("description") as string;
