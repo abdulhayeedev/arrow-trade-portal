@@ -83,3 +83,39 @@ export async function getProductsByIds(ids: number[]): Promise<WooProduct[]> {
     return [];
   }
 }
+export type WooAddress = {
+  first_name: string;
+  last_name: string;
+  company: string;
+  address_1: string;
+  address_2: string;
+  city: string;
+  postcode: string;
+  country: string;
+};
+
+export async function createOrderWithDetails(params: {
+  email: string;
+  phone: string;
+  companyId: string;
+  billing: WooAddress;
+  shipping: WooAddress;
+  lineItems: WooOrderLineItem[];
+  note?: string;
+  poNumber?: string;
+}): Promise<WooOrderResult> {
+  const response = await api.post("orders", {
+    payment_method: "trade-account",
+    payment_method_title: "Trade Account",
+    set_paid: false,
+    billing: { ...params.billing, email: params.email, phone: params.phone },
+    shipping: params.shipping,
+    customer_note: params.note ?? "",
+    line_items: params.lineItems,
+    meta_data: [
+      { key: "trade_portal_company_id", value: params.companyId },
+      ...(params.poNumber ? [{ key: "po_number", value: params.poNumber }] : []),
+    ],
+  });
+  return response.data as WooOrderResult;
+}

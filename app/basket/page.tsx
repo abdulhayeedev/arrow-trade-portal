@@ -1,5 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
-import { updateQuantity, removeItem, checkout } from "@/app/basket/actions";
+import { updateQuantity, removeItem } from "@/app/basket/actions";
 import { redirect } from "next/navigation";
 import SiteHeader from "@/components/SiteHeader";
 
@@ -101,14 +101,12 @@ export default async function BasketPage({
 
             <div className="mt-6 flex items-center justify-between">
               <span className="text-lg font-bold">Total: £{total.toFixed(2)}</span>
-              <form action={checkout}>
-                <button
-                  type="submit"
-                  className="h-11 rounded-lg bg-[#FF4438] px-6 text-sm font-bold text-white"
-                >
-                  Checkout
-                </button>
-              </form>
+              <a
+                href="/checkout"
+                className="flex h-11 items-center rounded-lg bg-[#FF4438] px-6 text-sm font-bold text-white"
+              >
+                Proceed to checkout
+              </a>
             </div>
           </>
         )}

@@ -17,6 +17,7 @@ const statusStyles: Record<string, string> = {
   processing: "bg-[#FDF1E4] text-[#B15E00]",
   dispatched: "bg-[#EEF3FF] text-[#16376B]",
   delivered: "bg-[#EAF6EC] text-[#1D7A34]",
+  cancelled: "bg-[#FFF3F2] text-[#A50D24]",
 };
 
 function StatusPill({ status }: { status: string }) {
@@ -101,7 +102,7 @@ export default async function DashboardPage({
             ORDERS IN PROGRESS
           </span>
           <div className="font-heading mt-1.5 text-3xl font-bold">
-            {orders.filter((o) => o.status !== "delivered").length}
+            {orders.filter((o) => o.status !== "delivered" && o.status !== "cancelled").length}
           </div>
         </div>
         <div className="rounded-xl border border-[#E5E5E7] p-5 shadow-sm">

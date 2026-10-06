@@ -2,6 +2,7 @@ import { getProducts } from "@/lib/woocommerce";
 import { addToBasket, toggleSavedPart } from "@/app/products/actions";
 import { getSavedProductIds } from "@/lib/saved-parts";
 import { createClient } from "@/lib/supabase/server";
+import { redirect } from "next/navigation";
 import SiteHeader from "@/components/SiteHeader";
 
 export const revalidate = 300; // re-fetch from WooCommerce at most every 5 minutes
@@ -18,8 +19,10 @@ export default async function ProductsPage({
     data: { user },
   } = await supabase.auth.getUser();
 
+  if (!user) {
+    redirect("/login");
+  }
   const savedIds = await getSavedProductIds(user?.id ?? null);
-
   const query = searchParams.q?.trim();
   const currentPage = Math.max(1, parseInt(searchParams.page ?? "1", 10) || 1);
   const products = query
