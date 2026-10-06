@@ -52,8 +52,8 @@ export default async function SiteHeader({
       <div className="mx-auto grid w-full max-w-[1180px] grid-cols-3 items-center">
       <nav className="flex items-center gap-8 text-sm font-semibold">
         {navLink("/", "Find products")}
-        {navLink("/profile/dashboard", "RFQs & quotes")}
-        {navLink("/profile/dashboard", "Orders")}
+        {!staff && navLink("/profile/dashboard", "RFQs & quotes")}
+        {!staff && navLink("/profile/dashboard", "Orders")}
         {staff && navLink("/admin/rfqs", "Admin")}
       </nav>
       <a href="/" className="flex items-center justify-center">

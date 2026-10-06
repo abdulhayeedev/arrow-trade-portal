@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { getDashboardData } from "@/lib/dashboard";
+import { isStaff } from "@/lib/admin";
 import { acceptQuote, removeSavedPart, addSavedPartToBasket } from "@/app/dashboard/actions";
 import { getProductsByIds } from "@/lib/woocommerce";
 import { redirect } from "next/navigation";
@@ -40,7 +41,15 @@ export default async function DashboardPage({
     data: { user },
   } = await supabase.auth.getUser();
 
-  const data = await getDashboardData(user?.id ?? null);
+  if (!user) {
+    redirect("/login");
+  }
+
+  if (await isStaff(user.id)) {
+    redirect("/admin/rfqs");
+  }
+
+  const data = await getDashboardData(user.id);
 
   if (!data) {
     redirect("/login");
