@@ -8,11 +8,15 @@ export default function UserMenu({
   companyName,
   initials,
   profileHref,
+  extraHref,
+  extraLabel,
 }: {
   displayName: string;
   companyName: string;
   initials: string;
   profileHref: string;
+  extraHref?: string;
+  extraLabel?: string;
 }) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -63,6 +67,14 @@ export default function UserMenu({
           >
             My profile
           </a>
+          {extraHref && extraLabel && (
+            <a
+              href={extraHref}
+              className="block px-4 py-2.5 text-sm font-medium text-[#14171F] hover:bg-[#FAFAFB]"
+            >
+              {extraLabel}
+            </a>
+          )}
           <form action={logout}>
             <button
               type="submit"

@@ -55,3 +55,69 @@ export async function acceptQuote(formData: FormData) {
 
   redirect(`/dashboard?message=${encodeURIComponent("Quote accepted — order created")}`);
 }
+export async function removeSavedPart(formData: FormData) {
+  const supabase = createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/login");
+  }
+
+  const id = formData.get("id") as string;
+  await supabase.from("saved_parts").delete().eq("id", id);
+
+  redirect(`/dashboard?message=${encodeURIComponent("Removed from saved parts")}`);
+}
+
+export async function addSavedPartToBasket(formData: FormData) {
+  const supabase = createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/login");
+  }
+
+  const { data: membership } = await supabase
+    .from("company_members")
+    .select("company_id")
+    .eq("user_id", user.id)
+    .maybeSingle();
+
+  if (!membership) {
+    redirect(`/dashboard?message=${encodeURIComponent("Could not find your company account")}`);
+  }
+
+  const wooProductId = parseInt(formData.get("wooProductId") as string, 10);
+  const productName = formData.get("productName") as string;
+  const price = parseFloat(formData.get("price") as string);
+
+  const { data: existing } = await supabase
+    .from("basket_items")
+    .select("id, quantity")
+    .eq("company_id", membership.company_id)
+    .eq("woo_product_id", wooProductId)
+    .maybeSingle();
+
+  if (existing) {
+    await supabase
+      .from("basket_items")
+      .update({ quantity: existing.quantity + 1 })
+      .eq("id", existing.id);
+  } else {
+    await supabase.from("basket_items").insert({
+      company_id: membership.company_id,
+      woo_product_id: wooProductId,
+      product_name: productName,
+      price,
+      quantity: 1,
+    });
+  }
+
+  redirect(`/dashboard?message=${encodeURIComponent("Added to basket")}`);
+}

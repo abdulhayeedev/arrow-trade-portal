@@ -1,5 +1,6 @@
 import { getProducts } from "@/lib/woocommerce";
-import { addToBasket } from "@/app/products/actions";
+import { addToBasket, toggleSavedPart } from "@/app/products/actions";
+import { getSavedProductIds } from "@/lib/saved-parts";
 import { createClient } from "@/lib/supabase/server";
 import SiteHeader from "@/components/SiteHeader";
 
@@ -16,6 +17,8 @@ export default async function ProductsPage({
   const {
     data: { user },
   } = await supabase.auth.getUser();
+
+  const savedIds = await getSavedProductIds(user?.id ?? null);
 
   const query = searchParams.q?.trim();
   const currentPage = Math.max(1, parseInt(searchParams.page ?? "1", 10) || 1);
@@ -103,20 +106,53 @@ export default async function ProductsPage({
                       </span>
                     </div>
 
-                    {product.stock_status === "instock" && (
-                      <form action={addToBasket} className="mt-2">
-                        <input type="hidden" name="wooProductId" value={product.id} />
-                        <input type="hidden" name="productName" value={product.name} />
-                        <input type="hidden" name="price" value={product.price} />
-                        <input type="hidden" name="returnQuery" value={query} />
-                        <button
-                          type="submit"
-                          className="h-10 w-full rounded-xl bg-[#14171F] text-[12.5px] font-bold text-white transition-colors hover:bg-[#2A2E38]"
-                        >
-                          Add to basket
-                        </button>
-                      </form>
-                    )}
+                    <div className="mt-2 flex gap-2">
+                      {product.stock_status === "instock" && (
+                        <form action={addToBasket} className="grow">
+                          <input type="hidden" name="wooProductId" value={product.id} />
+                          <input type="hidden" name="productName" value={product.name} />
+                          <input type="hidden" name="price" value={product.price} />
+                          <input type="hidden" name="returnQuery" value={query} />
+                          <button
+                            type="submit"
+                            className="h-10 w-full rounded-xl bg-[#14171F] text-[12.5px] font-bold text-white transition-colors hover:bg-[#2A2E38]"
+                          >
+                            Add to basket
+                          </button>
+                        </form>
+                      )}
+                      {user && (
+                        <form action={toggleSavedPart}>
+                          <input type="hidden" name="wooProductId" value={product.id} />
+                          <input type="hidden" name="productName" value={product.name} />
+                          <input type="hidden" name="returnQuery" value={query} />
+                          <input type="hidden" name="returnPage" value={currentPage} />
+                          <button
+                            type="submit"
+                            aria-label={
+                              savedIds.has(product.id) ? "Remove from saved parts" : "Save this part"
+                            }
+                            title={
+                              savedIds.has(product.id) ? "Remove from saved parts" : "Save this part"
+                            }
+                            className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#E5E5E7] bg-white transition-colors hover:border-[#FF4438]"
+                          >
+                            <svg
+                              width="16"
+                              height="16"
+                              viewBox="0 0 24 24"
+                              fill={savedIds.has(product.id) ? "#FF4438" : "none"}
+                              stroke={savedIds.has(product.id) ? "#FF4438" : "#6B7280"}
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            >
+                              <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+                            </svg>
+                          </button>
+                        </form>
+                      )}
+                    </div>
                   </div>
                 </div>
               ))}

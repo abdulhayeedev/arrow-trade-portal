@@ -71,3 +71,15 @@ export async function createOrder(params: {
   });
   return response.data as WooOrderResult;
 }
+export async function getProductsByIds(ids: number[]): Promise<WooProduct[]> {
+  if (ids.length === 0) return [];
+  try {
+    const response = await api.get("products", {
+      include: ids.join(","),
+      per_page: Math.min(ids.length, 100),
+    });
+    return response.data as WooProduct[];
+  } catch {
+    return [];
+  }
+}

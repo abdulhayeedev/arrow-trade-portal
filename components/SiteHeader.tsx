@@ -12,14 +12,19 @@ export default async function SiteHeader({
 }) {
   const staff = await isStaff(user?.id ?? null);
 
-  const companyName = (user?.user_metadata?.company_name as string) || "Trade Account";
-  const displayName = user?.email
-    ? user.email
-        .split("@")[0]
-        .split(/[._-]/)[0]
-        .replace(/^\w/, (c) => c.toUpperCase())
-    : "";
-  const initials = companyName
+  const fullName = ((user?.user_metadata?.full_name as string) || "").trim();
+  const companyName = staff
+    ? "Arrow Staff"
+    : (user?.user_metadata?.company_name as string) || "Trade Account";
+  const displayName = fullName
+    ? fullName.split(" ")[0]
+    : user?.email
+      ? user.email
+          .split("@")[0]
+          .split(/[._-]/)[0]
+          .replace(/^\w/, (c) => c.toUpperCase())
+      : "";
+  const initials = (fullName || companyName)
     .split(" ")
     .map((word) => word[0])
     .filter(Boolean)
@@ -47,8 +52,8 @@ export default async function SiteHeader({
       <div className="mx-auto grid w-full max-w-[1180px] grid-cols-3 items-center">
       <nav className="flex items-center gap-8 text-sm font-semibold">
         {navLink("/", "Find products")}
-        {navLink("/dashboard", "RFQs & quotes")}
-        {navLink("/dashboard", "Orders")}
+        {navLink("/profile/dashboard", "RFQs & quotes")}
+        {navLink("/profile/dashboard", "Orders")}
         {staff && navLink("/admin/rfqs", "Admin")}
       </nav>
       <a href="/" className="flex items-center justify-center">
@@ -74,7 +79,9 @@ export default async function SiteHeader({
               displayName={displayName}
               companyName={companyName}
               initials={initials}
-              profileHref={staff ? "/admin/rfqs" : "/dashboard"}
+              profileHref="/profile"
+              extraHref={staff ? "/admin/rfqs" : "/profile/dashboard"}
+              extraLabel={staff ? "Admin" : "My dashboard"}
             />
           </>
         )}
