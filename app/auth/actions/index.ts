@@ -40,7 +40,7 @@ export async function signup(formData: FormData) {
     );
   }
 
-  const { error } = await supabase.auth.signUp({
+  const { data, error } = await supabase.auth.signUp({
     email,
     password,
     options: {
@@ -53,6 +53,16 @@ export async function signup(formData: FormData) {
 
   if (error) {
     redirect(`/signup?error=${encodeURIComponent(error.message)}`);
+  }
+
+  // When the email already belongs to a confirmed account, Supabase returns a
+  // fake "success" with no identities attached, so we catch that case here.
+  if (data.user && data.user.identities?.length === 0) {
+    redirect(
+      `/signup?error=${encodeURIComponent(
+        "An account with this email already exists. Please sign in instead."
+      )}`
+    );
   }
 
   redirect(`/verify?email=${encodeURIComponent(email)}`);
