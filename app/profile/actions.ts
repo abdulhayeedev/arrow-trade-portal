@@ -55,3 +55,55 @@ export async function changePassword(formData: FormData) {
 
   redirect(`/profile?message=${encodeURIComponent("Your password has been changed")}`);
 }
+export async function saveAddress(formData: FormData) {
+  const supabase = createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/login");
+  }
+
+  const val = (name: string) => ((formData.get(name) as string) ?? "").trim();
+
+  if (!val("billing_address_1") || !val("billing_city") || !val("billing_postcode")) {
+    redirect(
+      `/profile?error=${encodeURIComponent("Please enter your address line 1, town and postcode")}`
+    );
+  }
+
+  const shippingProvided = val("shipping_address_1") !== "";
+
+  if (shippingProvided && (!val("shipping_city") || !val("shipping_postcode"))) {
+    redirect(
+      `/profile?error=${encodeURIComponent("Please complete the delivery address (town and postcode)")}`
+    );
+  }
+
+  const { error } = await supabase.from("profile_addresses").upsert(
+    {
+      user_id: user.id,
+      phone: val("phone") || null,
+      billing_address_1: val("billing_address_1"),
+      billing_address_2: val("billing_address_2") || null,
+      billing_city: val("billing_city"),
+      billing_postcode: val("billing_postcode"),
+      billing_country: val("billing_country") || "GB",
+      shipping_address_1: shippingProvided ? val("shipping_address_1") : null,
+      shipping_address_2: shippingProvided ? val("shipping_address_2") || null : null,
+      shipping_city: shippingProvided ? val("shipping_city") : null,
+      shipping_postcode: shippingProvided ? val("shipping_postcode") : null,
+      shipping_country: shippingProvided ? val("shipping_country") || "GB" : null,
+      updated_at: new Date().toISOString(),
+    },
+    { onConflict: "user_id" }
+  );
+
+  if (error) {
+    redirect(`/profile?error=${encodeURIComponent(error.message)}`);
+  }
+
+  redirect(`/profile?message=${encodeURIComponent("Your address has been saved")}`);
+}

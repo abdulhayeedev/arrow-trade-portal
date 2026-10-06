@@ -4,6 +4,7 @@ import { updateName, changePassword } from "@/app/profile/actions";
 import { redirect } from "next/navigation";
 import SiteHeader from "@/components/SiteHeader";
 import AccountSidebar from "@/components/AccountSidebar";
+import ProfileAddressForm from "@/components/ProfileAddressForm";
 
 export default async function ProfilePage({
   searchParams,
@@ -40,6 +41,16 @@ export default async function ProfilePage({
         .maybeSingle();
       companyName = company?.name ?? null;
     }
+  }
+
+  let address: Record<string, string | null> | null = null;
+  if (!staff) {
+    const { data } = await supabase
+      .from("profile_addresses")
+      .select("*")
+      .eq("user_id", user.id)
+      .maybeSingle();
+    address = data;
   }
 
   const fullName = (user.user_metadata?.full_name as string) || "";
@@ -111,6 +122,8 @@ export default async function ProfilePage({
             </button>
           </form>
         </section>
+
+        {!staff && <ProfileAddressForm address={address} />}
 
         <section className="rounded-2xl border border-[#E5E5E7] bg-white p-6 shadow-sm">
           <h2 className="font-heading mb-4 text-lg font-bold">Change password</h2>

@@ -88,11 +88,26 @@ export default async function CheckoutPage({
     redirect("/basket");
   }
 
-  const { data: details } = await supabase
+  const { data: companyDetails } = await supabase
     .from("company_checkout_details")
     .select("*")
     .eq("company_id", membership.company_id)
     .maybeSingle();
+
+  const { data: profileAddress } = await supabase
+    .from("profile_addresses")
+    .select("*")
+    .eq("user_id", user.id)
+    .maybeSingle();
+
+  // The person's own profile address takes priority over the company's last-used details.
+  const details = profileAddress?.billing_address_1
+    ? {
+        ...companyDetails,
+        ...profileAddress,
+        contact_name: (user.user_metadata?.full_name as string) || companyDetails?.contact_name,
+      }
+    : companyDetails;
 
   const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
