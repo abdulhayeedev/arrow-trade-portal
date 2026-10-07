@@ -28,6 +28,49 @@ export async function getAllCompanies(): Promise<AdminCompany[]> {
   return data ?? [];
 }
 
+export type AdminOrder = {
+  id: string;
+  company_id: string;
+  company_name: string;
+  reference: string;
+  description: string;
+  quantity: number;
+  status: string;
+  woo_order_id: number | null;
+  created_at: string;
+};
+
+export async function getAllOrders(): Promise<AdminOrder[]> {
+  const supabase = createClient();
+
+  const { data: orders } = await supabase
+    .from("orders")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (!orders || orders.length === 0) return [];
+
+  const companyIds = [...new Set(orders.map((o) => o.company_id))];
+  const { data: companies } = await supabase
+    .from("companies")
+    .select("id, name")
+    .in("id", companyIds);
+
+  const nameById = new Map((companies ?? []).map((c) => [c.id, c.name]));
+
+  return orders.map((o) => ({
+    id: o.id,
+    company_id: o.company_id,
+    company_name: nameById.get(o.company_id) ?? "Unknown company",
+    reference: o.reference,
+    description: o.description,
+    quantity: o.quantity,
+    status: o.status,
+    woo_order_id: o.woo_order_id ?? null,
+    created_at: o.created_at,
+  }));
+}
+
 export type AdminRfq = {
   id: string;
   company_id: string;

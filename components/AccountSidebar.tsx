@@ -2,13 +2,14 @@ export default function AccountSidebar({
   active,
   staff,
 }: {
-  active: "dashboard" | "profile" | "admin";
+  active: "dashboard" | "profile" | "admin" | "orders";
   staff: boolean;
 }) {
   const items = staff
     ? [
         { key: "profile", href: "/profile", label: "Profile" },
-        { key: "admin", href: "/admin/rfqs", label: "Admin" },
+        { key: "admin", href: "/admin/rfqs", label: "RFQs & quotes" },
+        { key: "orders", href: "/admin/orders", label: "Orders" },
       ]
     : [
         { key: "dashboard", href: "/profile/dashboard", label: "Dashboard" },
