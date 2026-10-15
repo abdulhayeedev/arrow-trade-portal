@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import SiteHeader from "@/components/SiteHeader";
+import SearchBar from "@/components/SearchBar";
 
 export default async function Home() {
   const supabase = createClient();
@@ -92,46 +93,28 @@ export default async function Home() {
         className="relative overflow-hidden px-14 py-16"
         style={{
           backgroundImage:
-            "linear-gradient(to right, rgba(255,255,255,0.98) 0%, rgba(255,255,255,0.96) 4%, rgba(255,255,255,0.55) 30%, rgba(255,255,255,0.15) 40%), url('https://arrowengineering.com/wp-content/uploads/2026/10/trade-banner-scaled.jpeg')",
+          "radial-gradient(ellipse 50% 75% at 50% 50%, rgba(255,255,255,0.62) 0%, rgba(255,255,255,0.55) 62%, rgba(255,255,255,0.3) 80%, rgba(255,255,255,0.05) 100%), url('https://arrowengineering.com/wp-content/uploads/2026/10/trade-banner-scaled.jpeg')",
           backgroundSize: "cover",
-          backgroundPosition: "right center",
+          backgroundPosition: "center",
         }}
       >
         <div className="relative mx-auto max-w-[1180px]">
-        <div className="max-w-[620px]">
+        <div className="mx-auto max-w-[880px] text-center">
           <h1 className="font-heading text-[52px] font-extrabold uppercase leading-[1.08] tracking-tight">
             <span className="block text-[#14171F]">Arrow Engineering Trade</span>
             <span className="block text-[#FF4438]">B2B Procurement, Simplified.</span>
           </h1>
-          <p className="mt-4 inline-block max-w-[480px] rounded-xl bg-white/75 px-3.5 py-2.5 text-base leading-relaxed text-[#374151] backdrop-blur-sm">
-            Search by part reference, dimensions or the engineering problem you&rsquo;re solving —
+          <p className="bold mt-4 inline-block max-w-[555px] px-3.5 py-2.5 text-base leading-relaxed backdrop-blur-sm">
+            Search by part reference, dimensions or the engineering problem you&rsquo;re solving 
             or upload a drawing and let an engineer confirm the right solution.
           </p>
 
-          <form
-            action="/products"
-            method="GET"
-            className="mt-7 flex max-w-[560px] items-center gap-3 rounded-2xl border border-[#E5E5E7] bg-white py-2 pl-5 pr-2 shadow-[0_10px_28px_rgba(20,23,31,0.08)]"
-          >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9AA2B1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
-              <circle cx="11" cy="11" r="8" />
-              <path d="M21 21l-4.35-4.35" />
-            </svg>
-            <input
-              type="text"
-              name="q"
-              placeholder="e.g. torque limiter for a 14mm keyed shaft"
-              className="h-11 grow bg-transparent text-sm text-[#14171F] outline-none placeholder:text-[#9AA2B1]"
-            />
-            <button
-              type="submit"
-              className="h-11 shrink-0 rounded-xl bg-[#14171F] px-6 text-[13px] font-bold text-white"
-            >
-              Search
-            </button>
-          </form>
+          <SearchBar
+            placeholder="e.g. torque limiter for a 14mm keyed shaft"
+            className="mx-auto mt-7 max-w-[640px]"
+          />
 
-          <div className="mt-4 flex flex-wrap gap-2.5">
+          <div className="mt-4 flex flex-wrap justify-center gap-2.5">
             {["Bearing reference", "Shaft size", "Torque limiters"].map((chip) => (
               <span
                 key={chip}

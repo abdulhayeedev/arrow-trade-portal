@@ -2,6 +2,7 @@ import type { User } from "@supabase/supabase-js";
 import { getBasketCount } from "@/lib/basket";
 import { isStaff } from "@/lib/admin";
 import UserMenu from "@/components/UserMenu";
+import ChatWidget from "@/components/ChatWidget";
 
 export default async function SiteHeader({
   active,
@@ -11,6 +12,10 @@ export default async function SiteHeader({
   user: User | null;
 }) {
   const staff = await isStaff(user?.id ?? null);
+
+  // CHAT_ENABLED: "off" (default), "staff" (pilot) or "all".
+  const chatMode = process.env.CHAT_ENABLED ?? "off";
+  const chatEnabled = !!user && (chatMode === "all" || (chatMode === "staff" && staff));
 
   const fullName = ((user?.user_metadata?.full_name as string) || "").trim();
   const companyName = staff
@@ -87,6 +92,7 @@ export default async function SiteHeader({
         )}
       </div>
       </div>
+    {chatEnabled && <ChatWidget />}
     </header>
   );
 }

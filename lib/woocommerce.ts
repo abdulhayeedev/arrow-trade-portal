@@ -20,6 +20,8 @@ export type WooProduct = {
   stock_status: string;
   images: { src: string; alt: string }[];
   short_description: string;
+  description?: string;
+  attributes?: { name: string; options: string[] }[];
 };
 
 export async function getProducts(params: {

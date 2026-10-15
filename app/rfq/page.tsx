@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 export default async function RfqPage({
   searchParams,
 }: {
-  searchParams: { error?: string };
+  searchParams: { error?: string; description?: string };
 }) {
   const supabase = createClient();
   const {
@@ -47,6 +47,7 @@ export default async function RfqPage({
               name="description"
               required
               rows={5}
+              defaultValue={searchParams.description ?? ""}
               placeholder="e.g. Torque limiter for a 14mm keyed shaft at around 10 Nm"
               className="rounded-lg border border-[#E5E5E7] px-3.5 py-3 text-sm text-[#14171F] outline-none focus:border-[#14171F]"
             />
