@@ -53,7 +53,7 @@ function renderMessage(text: string) {
   });
 }
 
-export default function ChatWidget() {
+export default function ChatWidget({ launcher = true }: { launcher?: boolean }) {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
@@ -111,10 +111,28 @@ export default function ChatWidget() {
     }
   }
 
+  const sendRef = useRef(send);
+  sendRef.current = send;
+  const loadingRef = useRef(loading);
+  loadingRef.current = loading;
+
+  // The homepage search bar asks the assistant by sending this event.
+  useEffect(() => {
+    function onAsk(e: Event) {
+      const text = (e as CustomEvent<{ text?: string }>).detail?.text;
+      if (!text) return;
+      setOpen(true);
+      if (loadingRef.current) setInput(text);
+      else sendRef.current(text);
+    }
+    window.addEventListener("arrow-chat:ask", onAsk);
+    return () => window.removeEventListener("arrow-chat:ask", onAsk);
+  }, []);
+
   return (
     <>
       {open && (
-        <div className="fixed bottom-24 right-6 z-[60] flex h-[560px] max-h-[calc(100vh-8rem)] w-[380px] max-w-[calc(100vw-2rem)] flex-col overflow-hidden rounded-2xl border border-[#E5E5E7] bg-white shadow-[0_24px_60px_rgba(20,23,31,0.22)]">
+        <div className={`fixed ${launcher ? "bottom-24" : "bottom-6"} right-6 z-[60] flex h-[560px] max-h-[calc(100vh-8rem)] w-[380px] max-w-[calc(100vw-2rem)] flex-col overflow-hidden rounded-2xl border border-[#E5E5E7] bg-white shadow-[0_24px_60px_rgba(20,23,31,0.22)]`}>
           <div className="flex items-center justify-between border-b border-[#E5E5E7] px-4 py-3">
             <div>
               <div className="text-sm font-bold text-[#14171F]">Arrow Assistant</div>
@@ -230,7 +248,7 @@ export default function ChatWidget() {
         </div>
       )}
 
-      <button
+      {launcher && <button
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-label={open ? "Close assistant" : "Open assistant"}
@@ -239,7 +257,7 @@ export default function ChatWidget() {
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
         </svg>
-      </button>
+      </button>}
     </>
   );
 }

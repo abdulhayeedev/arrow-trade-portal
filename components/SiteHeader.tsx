@@ -3,19 +3,20 @@ import { getBasketCount } from "@/lib/basket";
 import { isStaff } from "@/lib/admin";
 import UserMenu from "@/components/UserMenu";
 import ChatWidget from "@/components/ChatWidget";
+import { chatEnabledFor } from "@/lib/chat/enabled";
 
 export default async function SiteHeader({
   active,
   user,
+  hideChatLauncher = false,
 }: {
   active?: string;
   user: User | null;
+  hideChatLauncher?: boolean;
 }) {
   const staff = await isStaff(user?.id ?? null);
 
-  // CHAT_ENABLED: "off" (default), "staff" (pilot) or "all".
-  const chatMode = process.env.CHAT_ENABLED ?? "off";
-  const chatEnabled = !!user && (chatMode === "all" || (chatMode === "staff" && staff));
+  const chatEnabled = chatEnabledFor(!!user, staff);
 
   const fullName = ((user?.user_metadata?.full_name as string) || "").trim();
   const companyName = staff
@@ -92,7 +93,7 @@ export default async function SiteHeader({
         )}
       </div>
       </div>
-    {chatEnabled && <ChatWidget />}
+    {chatEnabled && <ChatWidget launcher={!hideChatLauncher} />}
     </header>
   );
 }

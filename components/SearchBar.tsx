@@ -1,12 +1,16 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 
 export default function SearchBar({
   placeholder,
+  chatPlaceholder = "Ask anything: a part, a size or a problem you're solving",
+  chatEnabled = false,
   className = "",
 }: {
   placeholder: string;
+  chatPlaceholder?: string;
+  chatEnabled?: boolean;
   className?: string;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -26,10 +30,25 @@ export default function SearchBar({
     return () => window.removeEventListener("keydown", onKeyDown);
   }, []);
 
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    if (!chatEnabled) return; // normal catalogue search: the form submits to /products
+    e.preventDefault();
+    const text = inputRef.current?.value.trim();
+    if (!text) return;
+    window.dispatchEvent(new CustomEvent("arrow-chat:ask", { detail: { text } }));
+    if (inputRef.current) inputRef.current.value = "";
+  }
+
+  function searchCatalogue() {
+    const text = inputRef.current?.value.trim();
+    if (text) window.location.href = `/products?q=${encodeURIComponent(text)}`;
+  }
+
   return (
     <form
       action="/products"
       method="GET"
+      onSubmit={handleSubmit}
       className={`relative rounded-[28px] border border-white/60 bg-white/25 p-3 shadow-[0_18px_50px_rgba(60,70,120,0.18)] backdrop-blur-xl ${className}`}
     >
       <span
@@ -60,12 +79,32 @@ export default function SearchBar({
           ref={inputRef}
           type="text"
           name="q"
-          placeholder={placeholder}
-          aria-label="Search the catalogue"
+          placeholder={chatEnabled ? chatPlaceholder : placeholder}
+          aria-label={chatEnabled ? "Ask the assistant" : "Search the catalogue"}
           autoComplete="off"
           className="h-14 grow bg-transparent text-[15px] text-[#14171F] outline-none placeholder:text-[#8E94A8]"
         />
-        <span aria-hidden="true" className="hidden shrink-0 items-center gap-1.5 text-[#8E94A8] sm:flex">
+        {chatEnabled && (
+          <div className="flex shrink-0 items-center gap-3">
+            <button
+              type="button"
+              onClick={searchCatalogue}
+              className="hidden whitespace-nowrap text-[12.5px] font-semibold text-[#6B7280] transition-colors hover:text-[#14171F] sm:block"
+            >
+              Search catalogue
+            </button>
+            <button
+              type="submit"
+              className="h-10 shrink-0 rounded-xl bg-[#FF4438] px-4 text-[13px] font-bold text-white transition-colors hover:bg-[#E63A2F]"
+            >
+              Ask
+            </button>
+          </div>
+        )}
+        <span
+          aria-hidden="true"
+          className={`hidden shrink-0 items-center gap-1.5 text-[#8E94A8] ${chatEnabled ? "" : "sm:flex"}`}
+        >
           <kbd className="flex h-6 min-w-[26px] items-center justify-center rounded-md bg-[#E0E4F0] px-1.5 font-sans text-[11.5px] font-semibold">
             {isMac ? "⌘" : "Ctrl"}
           </kbd>

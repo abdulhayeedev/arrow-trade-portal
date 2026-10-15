@@ -2,6 +2,8 @@ import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import SiteHeader from "@/components/SiteHeader";
 import SearchBar from "@/components/SearchBar";
+import { isStaff } from "@/lib/admin";
+import { chatEnabledFor } from "@/lib/chat/enabled";
 
 export default async function Home() {
   const supabase = createClient();
@@ -13,9 +15,11 @@ export default async function Home() {
     redirect("/login");
   }
 
+  const chatEnabled = chatEnabledFor(true, await isStaff(user.id));
+
   return (
     <main className="flex min-h-screen flex-col bg-white text-[#14171F]">
-      <SiteHeader active="Find products" user={user} />
+      <SiteHeader active="Find products" user={user} hideChatLauncher />
 
       {/* USP bar */}
       <section className="border-b border-[#E5E5E7] bg-[#FAFAFB] px-14 py-6">
@@ -111,6 +115,7 @@ export default async function Home() {
 
           <SearchBar
             placeholder="e.g. torque limiter for a 14mm keyed shaft"
+            chatEnabled={chatEnabled}
             className="mx-auto mt-7 max-w-[640px]"
           />
 
