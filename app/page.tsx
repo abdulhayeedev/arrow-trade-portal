@@ -17,6 +17,16 @@ export default async function Home() {
 
   const chatEnabled = chatEnabledFor(true, await isStaff(user.id));
 
+  // The three most recent chats, shown under the search bar.
+  const { data: recentChats } = chatEnabled
+    ? await supabase
+        .from("chat_conversations")
+        .select("id, title")
+        .eq("user_id", user.id)
+        .order("updated_at", { ascending: false })
+        .limit(3)
+    : { data: null };
+
   return (
     <main className="flex min-h-screen flex-col bg-white text-[#14171F]">
       <SiteHeader active="Find products" user={user} hideChatLauncher />
@@ -129,6 +139,36 @@ export default async function Home() {
               </span>
             ))}
           </div>
+
+          {chatEnabled && recentChats && recentChats.length > 0 && (
+            <div className="mx-auto mt-4 flex max-w-[640px] items-center gap-3 rounded-xl border border-white/60 bg-white/65 px-4 py-2 text-[12.5px] shadow-[0_6px_18px_rgba(60,70,120,0.10)] backdrop-blur-md">
+              <span className="flex shrink-0 items-center gap-1.5 font-semibold text-[#374151]">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="9" />
+                  <path d="M12 7v5l3 2" />
+                </svg>
+                Recent chats
+              </span>
+              <div className="flex min-w-0 flex-1 items-center">
+                {recentChats.map((c) => (
+                  <a
+                    key={c.id}
+                    href={`/assistant?c=${c.id}`}
+                    title={c.title}
+                    className="flex min-w-0 flex-1 items-center gap-1.5 rounded-md px-2 py-1.5 text-left text-[#4B5563] transition-colors hover:bg-white/80 hover:text-[#14171F]"
+                  >
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 text-[#9AA2B1]">
+                      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                    </svg>
+                    <span className="truncate">{c.title}</span>
+                  </a>
+                ))}
+              </div>
+              <a href="/assistant" className="shrink-0 font-semibold text-[#FF4438] hover:underline">
+                View all
+              </a>
+            </div>
+          )}
         </div>
         </div>
       </section>

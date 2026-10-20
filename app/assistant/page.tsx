@@ -68,7 +68,7 @@ export default async function AssistantPage({
 
   return (
     <main className="flex h-screen flex-col bg-white text-[#14171F]">
-      <SiteHeader user={user} hideChatLauncher />
+      <SiteHeader active="Assistant" user={user} hideChatLauncher />
       <ChatShell
         conversations={conversations ?? []}
         activeId={activeId}
