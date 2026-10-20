@@ -2,7 +2,7 @@ import type { User } from "@supabase/supabase-js";
 import { getBasketCount } from "@/lib/basket";
 import { isStaff } from "@/lib/admin";
 import UserMenu from "@/components/UserMenu";
-import ChatWidget from "@/components/ChatWidget";
+
 import { chatEnabledFor } from "@/lib/chat/enabled";
 
 export default async function SiteHeader({
@@ -93,7 +93,17 @@ export default async function SiteHeader({
         )}
       </div>
       </div>
-    {chatEnabled && <ChatWidget launcher={!hideChatLauncher} />}
+    {chatEnabled && !hideChatLauncher && (
+        <a
+          href="/assistant"
+          aria-label="Open the assistant"
+          className="fixed bottom-6 right-6 z-[60] flex h-14 w-14 items-center justify-center rounded-full bg-[#14171F] text-white shadow-[0_10px_28px_rgba(20,23,31,0.35)] transition-colors hover:bg-[#2A2E38]"
+        >
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+          </svg>
+        </a>
+      )}
     </header>
   );
 }

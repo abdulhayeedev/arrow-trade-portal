@@ -10,7 +10,7 @@ const MAX_STEPS = 5;
 export async function runChat(
   history: ChatTurn[],
   ctx: ToolContext
-): Promise<{ reply: string; toolsUsed: string[] }> {
+): Promise<{ reply: string; toolsUsed: string[]; searchQuery?: string }> {
   const apiKey = process.env.GEMINI_API_KEY;
   const model = process.env.GEMINI_MODEL;
   if (!apiKey || !model) {
@@ -25,6 +25,7 @@ export async function runChat(
   }));
 
   const toolsUsed: string[] = [];
+  let searchQuery: string | undefined;
 
   for (let step = 0; step < MAX_STEPS; step++) {
     const response = await ai.models.generateContent({
@@ -56,6 +57,7 @@ export async function runChat(
           text ||
           "Sorry, I couldn't put an answer together. Please try again, or send it to an Arrow engineer with an RFQ.",
         toolsUsed,
+        searchQuery,
       };
     }
 
@@ -65,6 +67,10 @@ export async function runChat(
     const responseParts: Part[] = [];
     for (const call of calls) {
       toolsUsed.push(call.name ?? "unknown");
+      if (call.name === "search_products") {
+        const q = String((call.args as Record<string, unknown> | undefined)?.query ?? "").trim();
+        if (q) searchQuery = q;
+      }
       const result = await runTool(call.name ?? "", (call.args ?? {}) as Record<string, unknown>, ctx);
       responseParts.push({
         functionResponse: { id: call.id, name: call.name, response: { output: result } },

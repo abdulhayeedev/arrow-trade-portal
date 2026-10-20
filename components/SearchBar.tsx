@@ -35,8 +35,7 @@ export default function SearchBar({
     e.preventDefault();
     const text = inputRef.current?.value.trim();
     if (!text) return;
-    window.dispatchEvent(new CustomEvent("arrow-chat:ask", { detail: { text } }));
-    if (inputRef.current) inputRef.current.value = "";
+    window.location.href = `/assistant?q=${encodeURIComponent(text)}`;
   }
 
   function searchCatalogue() {
