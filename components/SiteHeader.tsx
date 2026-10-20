@@ -14,6 +14,30 @@ export default async function SiteHeader({
   user: User | null;
   hideChatLauncher?: boolean;
 }) {
+  if (!user) {
+    return (
+      <header className="relative z-50 flex h-[76px] items-center border-b border-[#E5E5E7] bg-white px-12">
+        <div className="mx-auto grid w-full max-w-[1180px] grid-cols-3 items-center">
+          <div />
+          <a href="/" className="flex items-center justify-center">
+            <img src="/images/logo.png" alt="Arrow Engineering" className="h-14 w-auto" />
+          </a>
+          <div className="flex items-center justify-end gap-5 text-sm font-semibold">
+            <a href="/login" className="text-[#6B7280] transition-colors hover:text-[#14171F]">
+              Sign in
+            </a>
+            <a
+              href="/signup"
+              className="rounded-lg border border-[#E5E5E7] px-4 py-2 text-[#14171F] transition-colors hover:border-[#14171F]"
+            >
+              Request access
+            </a>
+          </div>
+        </div>
+      </header>
+    );
+  }
+
   const staff = await isStaff(user?.id ?? null);
 
   const chatEnabled = chatEnabledFor(!!user, staff);

@@ -1,6 +1,7 @@
 import { submitRfq } from "@/app/rfq/actions";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
+import SiteHeader from "@/components/SiteHeader";
 
 export default async function RfqPage({
   searchParams,
@@ -16,7 +17,9 @@ export default async function RfqPage({
     redirect("/login");
   }
   return (
-    <main className="flex min-h-screen items-center justify-center bg-white px-6 py-12">
+    <main className="flex min-h-screen flex-col bg-white">
+      <SiteHeader user={user} />
+      <div className="flex flex-1 items-center justify-center px-6 py-12">
       <div className="w-full max-w-lg">
         <div className="mb-8">
           <a href="/" className="text-sm font-semibold text-[#FF4438]">
@@ -71,6 +74,7 @@ export default async function RfqPage({
             Submit RFQ
           </button>
         </form>
+      </div>
       </div>
     </main>
   );

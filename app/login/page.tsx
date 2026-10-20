@@ -9,7 +9,6 @@ export default function LoginPage({
     <main className="flex min-h-screen items-center justify-center bg-white px-6">
       <div className="w-full max-w-sm">
         <div className="mb-8 flex flex-col items-center gap-2 text-center">
-          <img src="/images/logo.png" alt="Arrow Engineering" className="h-12 w-auto" />
           <h1 className="font-heading mt-2 text-2xl font-bold text-[#14171F]">
             Trade account sign in
           </h1>

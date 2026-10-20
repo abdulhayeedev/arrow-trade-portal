@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import SiteFooter from "@/components/SiteFooter";
+import FooterGate from "@/components/FooterGate";
+import HeaderGate from "@/components/HeaderGate";
+import SiteHeader from "@/components/SiteHeader";
 
 export const metadata: Metadata = {
   title: "Arrow Trade Portal",
@@ -13,7 +17,15 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="font-body">{children}</body>
+      <body className="font-body">
+        <HeaderGate>
+          <SiteHeader user={null} />
+        </HeaderGate>
+        {children}
+        <FooterGate>
+          <SiteFooter />
+        </FooterGate>
+      </body>
     </html>
   );
 }
