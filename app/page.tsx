@@ -182,38 +182,66 @@ export default async function Home() {
           <div className="grid grid-cols-2 gap-5">
             <a
               href="/products"
-              className="rounded-2xl border border-[#FF4438] bg-[#FFF3F2] p-6 transition-all hover:-translate-y-0.5 hover:shadow-[0_14px_32px_rgba(255,68,56,0.14)]"
+              className="group flex min-h-[260px] flex-col justify-between rounded-md bg-[#FF4438] p-8 text-white shadow-[0_8px_24px_rgba(255,68,56,0.18)] transition-all hover:-translate-y-0.5 hover:shadow-[0_14px_32px_rgba(255,68,56,0.30)]"
             >
-              <span className="text-[10.5px] font-bold text-[#A50D24]">
-                STRAIGHTFORWARD PRODUCTS
-              </span>
-              <div className="font-heading mt-1 text-xl font-bold text-[#14171F]">
-                Browse catalogue
-              </div>
-              <p className="mt-2 text-sm text-[#6B7280]">
-                Find a product, add it to your basket, and check out with your account pricing
-                already applied.
-              </p>
-              <div className="group mt-3 flex items-center gap-1.5 text-[12.5px] font-semibold text-[#FF4438]">
-                Find · Configure · Checkout
-                <span className="transition-transform group-hover:translate-x-1">→</span>
+              <span className="text-[11px] font-bold tracking-[1.6px] text-white/90">01 / 02</span>
+              <div>
+                <div className="font-heading text-[30px] font-bold leading-tight">Browse the catalogue</div>
+                <p className="mt-3 max-w-[310px] text-[14px] font-medium leading-relaxed text-white">
+                  Find a product, add it to your basket, and check out with your account pricing already
+                  applied.
+                </p>
+                <div className="mt-6 flex items-end justify-between">
+                  <span className="flex items-center gap-1.5 text-[13px] font-bold">
+                    Explore products <span aria-hidden="true">↗</span>
+                  </span>
+                  <svg
+                    width="26"
+                    height="26"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.6"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                    className="transition-transform group-hover:-translate-y-1 group-hover:translate-x-1"
+                  >
+                    <path d="M7 17L17 7M8 7h9v9" />
+                  </svg>
+                </div>
               </div>
             </a>
             <a
               href="/rfq"
-              className="rounded-2xl border border-[#E5E5E7] bg-white p-6 shadow-sm transition-all hover:-translate-y-0.5 hover:border-[#FF4438] hover:shadow-[0_14px_32px_rgba(255,68,56,0.14)]"
+              className="group flex min-h-[260px] flex-col justify-between rounded-md bg-[#E3E7E3] p-8 text-[#14171F] shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-[0_14px_32px_rgba(20,23,31,0.10)]"
             >
-              <span className="text-[10.5px] font-bold text-[#6B7280]">ENGINEERING ENQUIRY</span>
-              <div className="font-heading mt-1 text-xl font-bold text-[#14171F]">
-                Start an RFQ
-              </div>
-              <p className="mt-2 text-sm text-[#6B7280]">
-                Describe your problem or upload a drawing, and an engineer will come back with a
-                quotation.
-              </p>
-              <div className="group mt-3 flex items-center gap-1.5 text-[12.5px] font-semibold text-[#374151]">
-                Drawing · Review · Quotation
-                <span className="transition-transform group-hover:translate-x-1">→</span>
+              <span className="text-[11px] font-bold tracking-[1.6px] text-[#14171F]/70">02 / 02</span>
+              <div>
+                <div className="font-heading text-[30px] font-bold leading-tight">Start an RFQ</div>
+                <p className="mt-3 max-w-[310px] text-[14px] leading-relaxed text-[#4B5563]">
+                  Describe your problem or upload a drawing, and an engineer will come back with a
+                  quotation.
+                </p>
+                <div className="mt-6 flex items-end justify-between">
+                  <span className="flex items-center gap-1.5 text-[13px] font-bold">
+                    Start an enquiry <span aria-hidden="true">↗</span>
+                  </span>
+                  <svg
+                    width="26"
+                    height="26"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.6"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                    className="transition-transform group-hover:-translate-y-1 group-hover:translate-x-1"
+                  >
+                    <path d="M7 17L17 7M8 7h9v9" />
+                  </svg>
+                </div>
               </div>
             </a>
           </div>

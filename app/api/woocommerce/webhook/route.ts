@@ -19,7 +19,6 @@ export async function POST(request: Request) {
   }
 
   const expected = crypto.createHmac("sha256", secret).update(rawBody).digest("base64");
-
   const a = Buffer.from(signature);
   const b = Buffer.from(expected);
 
